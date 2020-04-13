@@ -13,4 +13,4 @@ def get_timetable():
     data_time = []
     for i in Time:
         data_time.append(['第'+str(i.class_id)+'节', i.begin_time, i.end_time ])
-    return jsonify(code=2, data=data_time)
+    return jsonify(code=3, data=data_time)
