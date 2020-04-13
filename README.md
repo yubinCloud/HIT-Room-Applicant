@@ -15,4 +15,4 @@
 |学生提交教室申请|http://xx.com/api/stu/apply|POST|stu_apply.py|王政|
 |上传教室申请材料图片|http://xx.com/api/stu/apply/image|POST|||
 
-test
+testtest
