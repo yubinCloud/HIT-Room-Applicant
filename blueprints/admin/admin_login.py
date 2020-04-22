@@ -21,5 +21,5 @@ def Admin_Login():
     if admin is None:
         return jsonify(code=-102, data={"tip": "用户名或密码错误，登陆失败"})
     else:
-        session['admin_login'] = True
+        session['admin_login'] = username
         return jsonify(code=0, data={"tip": "登陆成功"})
