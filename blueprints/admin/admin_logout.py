@@ -1,8 +1,5 @@
 from flask import Blueprint, jsonify, session
 
-from hitapply.models import Administrator
-
-
 admin_logout = Blueprint('admin_logout', __name__)
 
 @admin_logout.route('', methods = ['POST'])
