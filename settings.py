@@ -1,9 +1,11 @@
 from hitapply.common.const import DatabaseConst
+import os
 
 
 class BaseConfig(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
+    SECRET_KEY = os.urandom(24)
 
 
 class DevelopmentConfig(BaseConfig):
