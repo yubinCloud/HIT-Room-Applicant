@@ -40,21 +40,21 @@ def turn_to_int(a):
     return hour * 60 + minute
 
 
-def adm_login_required(get_grades=(1,2,3), post_grades=(1,2,3)):
+def adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2, 3)):
     """
     对管理员等级进行限制
     :param get_grades: GET请求时所允许的管理员等级
     :param post_grades: POST请求时所允许的管理员等级
     :return: 装饰后的视图函数
     """
-    def login_decorator(func):
+    def login_decorator(view_func):
         """
         对func函数进行装饰
-        :param func: 所要装饰的视图函数
+        :param view_func: 所要装饰的视图函数
         :return: 装饰后的视图函数
         """
 
-        @functools.wraps(func)
+        @functools.wraps(view_func)
         def wrapped_func(*args, **kwargs):
             """
             完成对管理员等级的验证，并转发参数给func
@@ -74,7 +74,7 @@ def adm_login_required(get_grades=(1,2,3), post_grades=(1,2,3)):
                 if cur_grade not in post_grades:
                     return jsonify(code=-102, data={'tip': '管理员等级不符合要求'})
 
-            return func(*args, **kwargs)
+            return view_func(*args, **kwargs)
 
         return wrapped_func
 
