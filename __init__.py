@@ -6,7 +6,7 @@ from hitapply.extensions import db
 from hitapply.settings import config
 from hitapply.blueprints.stu import time_get, notice_list, stu_apply, room_floor_get, stu_room_use, notice_info, \
     stu_apply_info, room_info, room_use_info
-from hitapply.blueprints.admin import admin_login, admin_logout, user_info, admin_notice_bp
+from hitapply.blueprints.admin import admin_login, admin_logout, user_info, notice_del, admin_notice_bp
 
 
 
@@ -93,5 +93,11 @@ def register_blueprints(app):
     app.register_blueprint(user_info.user_info, url_prefix='/api/admin/user')
 
     # http://xx.com/api/admin/notice
+    # POST: 新增公告
     # GET: 查看公告列表
     app.register_blueprint(admin_notice_bp.admin_notice_bp, url_prefix='/api/admin/notice')
+
+
+    # http://xx.com/api/admin/notice/id
+    # POST: 删除公告
+    app.register_blueprint(notice_del.notice_del, url_prefix='/api/admin/notice/<int:notice_id>')

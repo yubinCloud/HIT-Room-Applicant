@@ -1,10 +1,11 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 from hitapply.models import Notice
+from hitapply.extensions import db
 
 admin_notice_bp = Blueprint('admin_notice_bp', __name__)
 
 
-@admin_notice_bp.route('', methods=['GET'])
+@admin_notice_bp.route('', methods=['GET', 'POST'])
 def Adm_notice():
     # 获取json
     rev_json = request.get_json(silent=True)
@@ -15,7 +16,23 @@ def Adm_notice():
         elif type(res) is tuple:
             code, data = res
             return jsonify(code=code, data=data)
+    elif request.method == 'POST':
+        account = session.get('admin_login')
+        if account is None:
+            return jsonify(code=-102, data={"tip": "用户未登录"})
+        if rev_json is None:
+            return jsonify(code=-101, data=None)
+        notice = Notice()
+        notice.title = rev_json.get('title')
+        notice.content = rev_json.get('content')
+        Notice(notice)
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return jsonify(code=101, data={'error': '数据库异常'})
 
+        return jsonify(code=0, data={'tip': '新增公告成功'})
 
 def notice_list_GET(rev_json):
     """
@@ -39,3 +56,5 @@ def notice_list_GET(rev_json):
     res = [dict(id=record.notice_id, title=record.title, time=record.time)
            for record in notices]
     return res
+
+
