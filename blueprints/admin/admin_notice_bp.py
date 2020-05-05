@@ -1,11 +1,13 @@
 from flask import Blueprint, jsonify, request, session
 from hitapply.models import Notice
 from hitapply.extensions import db
+from hitapply.common.functions import adm_login_required
 
 admin_notice_bp = Blueprint('admin_notice_bp', __name__)
 
 
 @admin_notice_bp.route('', methods=['GET', 'POST'])
+@adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2))
 def Adm_notice():
     # 获取json
     rev_json = request.get_json(silent=True)
@@ -14,12 +16,9 @@ def Adm_notice():
         if type(res) is list:
             return jsonify(code=0, data=res)
         elif type(res) is tuple:
-            code, data = res
-            return jsonify(code=code, data=data)
+            code, tip = res
+            return jsonify(code=code, data={'tip': tip})
     elif request.method == 'POST':
-        account = session.get('admin_login')
-        if account is None:
-            return jsonify(code=-102, data={"tip": "用户未登录"})
         if rev_json is None:
             return jsonify(code=-101, data=None)
         notice = Notice()

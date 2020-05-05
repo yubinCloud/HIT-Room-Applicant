@@ -1,5 +1,4 @@
 # 学生端相关路由函数
-
 |API |url|请求方式|文件名|负责人|
 |:----|:----|:----|:----|:---|
 |查看公告列表|http://xx.com/api/stu/notice|GET|notice_list.py|王政|
@@ -15,4 +14,8 @@
 |学生提交教室申请|http://xx.com/api/stu/apply|POST|stu_apply.py|王政|
 |上传教室申请材料图片|http://xx.com/api/stu/apply/image|POST|||
 
-testtest
+# 管理员端相关路由函数
+|API |url|请求方式|文件名|负责人|
+|:----|:----|:----|:----|:---|
+|管理员登录|http://xx.com/api/admin/login|POST|adm_login|钟亦奇|
+|管理员登出|http://xx.com/api/admin/logout|POST|adm_logout|钟亦奇|
