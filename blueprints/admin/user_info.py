@@ -4,13 +4,14 @@ from hitapply.models import Administrator
 
 user_info = Blueprint('user_info', __name__)
 
-@user_info.route('', methods = ['GET'])
+
+@user_info.route('', methods=['GET'])
 def User_Info():
     account = session.get('admin_login')
     if account is None:
         return jsonify(code=-102, data={"tip": "用户未登录"})
 
-    admin = Administrator.query.filter_by(account = account).first();
+    admin = Administrator.query.filter_by(account=account).first();
     if admin is None:
         return jsonify(code=-102, data={"tip": "账户不存在"})
 
@@ -20,4 +21,4 @@ def User_Info():
         "grade": admin.grade,
         "org": admin.org,
         "phone": admin.phone
-        })
+    })

@@ -1,9 +1,10 @@
 from flask import Blueprint, jsonify, session, request
-
+from extensions import db
 from hitapply.models import Notice
 
 
 notice_del = Blueprint('notice_del', __name__)
+
 
 @notice_del.route('', methods = ['POST'])
 def Notice_del(notice_id):
