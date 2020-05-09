@@ -7,6 +7,7 @@ from hitapply.extensions import db
 
 # 管理员账号信息表
 class Administrator(db.Model):
+    __table_args__ = {'extend_existing': True}
     account = db.Column(db.String(255), primary_key=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     grade = db.Column(db.SmallInteger, nullable=False)
@@ -17,6 +18,7 @@ class Administrator(db.Model):
 
 # 公告信息表
 class Notice(db.Model):
+    __table_args__ = {'extend_existing': True}
     notice_id = db.Column(db.String(255), primary_key=True, nullable=False)
     org = db.Column(db.String(255), nullable=False)
     title = db.Column(db.String(255), nullable=False)
@@ -26,6 +28,7 @@ class Notice(db.Model):
 
 # 教室信息表
 class Room(db.Model):
+    __table_args__ = {'extend_existing': True}
     room_id = db.Column(db.String(255), primary_key=True, nullable=False)
     building = db.Column(db.String(255), nullable=False)
     floor = db.Column(db.Integer, nullable=False)
@@ -39,6 +42,7 @@ class Room(db.Model):
 
 # 时间表
 class Timetable(db.Model):
+    __table_args__ = {'extend_existing': True}
     class_id = db.Column(db.Integer, primary_key=True, nullable=False)
     begin_time = db.Column(db.Integer, nullable=False)
     end_time = db.Column(db.Integer, nullable=False)
@@ -46,6 +50,7 @@ class Timetable(db.Model):
 
 # 预约信息表
 class Apply(db.Model):
+    __table_args__ = {'extend_existing': True}
     apply_id = db.Column(db.String(255), primary_key=True, nullable=False)
     activity_name = db.Column(db.String(255), nullable=False)
     applicant_id = db.Column(db.String(255), nullable=False)

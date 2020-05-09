@@ -6,41 +6,33 @@ from hitapply.extensions import db
 
 account_about = Blueprint('account_about', __name__)
 
-def account_POST(admin):
-
-
 
 @account_about.route('', methods=['GET', 'POST'])
 #@adm_login_required(get_grades=1, post_grades=1)
 def Adm_accout():
     # 获取json
     rev_json = request.get_json(silent=True)
-    if request.method == 'GET':
+    if request.method == 'GET':                 # 处理GET请求
         res = account_list_GET(rev_json)
-        if type(res) == list:
+        if type(res) == list:                   # 成功返回数据
             return jsonify(code=0, data=res)
-        elif type(res) == tuple:
+        elif type(res) == tuple:                # 失败，返回提示信息
             code, tip = res
             return jsonify(code=code, data={'tip': tip})
-        return jsonify(data=rev_json)
-    elif request.method == 'POST':
-        if rev_json is None:
+    elif request.method == 'POST':              # 处理POST请求
+        if rev_json is None:                    # json为空
             return jsonify(code=-101, data=None)
         admin = Administrator()
-        admin.account = rev_json.get('account')
-        admin.password = rev_json.get('password')
-        admin.grade = rev_json.get('grade')
-        #admin.name = rev_json.get('name')
-        #admin.org = rev_json.get('org')
-        #admin.phone = rev_json.get('phone')
+        code, tip = admin_add(admin, rev_json)
+        if code == -101:                        # 缺少必需参数
+            return jsonify(code=code, data={'tip': tip})
         db.session.add(admin)
         try:
             db.session.commit()
         except:
             db.session.rollback()
             return jsonify(code=101, data={'error': '数据库异常'})
-
-        return jsonify(code=0, data={'tip': '新增管理员账号成功'})
+        return jsonify(code=code, data={'tip': tip})    # 返回成功
 
 
 def account_list_GET(rev_json):
@@ -66,3 +58,26 @@ def account_list_GET(rev_json):
            for record in administrators]
     return res
 
+
+def admin_add(admin, rev_json):
+    '''
+    处理POST请求，向数据库添加数据
+    :param admin: 数据库Administrator实例
+    :param rev_json: 接收的json数据
+    :return: (code, tip) 状态码及提示信息
+    '''
+    account_, password_, grade_, name_, org_, phone_ = rev_json.get('account'), rev_json.get('password'), \
+                                                       rev_json.get('grade'),rev_json.get('name'), \
+                                                       rev_json.get('org'),rev_json.get('phone')
+    if None in [account_, password_, grade_]:
+        return -101, '缺少必需参数'
+    admin.account = account_
+    admin.password = password_
+    admin.grade = grade_
+    if name_:
+        admin.name = name_
+    if org_:
+        admin.org = org_
+    if phone_:
+        admin.phone = phone_
+    return 0, '新增管理员账号成功'

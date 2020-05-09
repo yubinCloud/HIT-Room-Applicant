@@ -73,7 +73,7 @@ def apply_for_stu_POST(record, json_data):
             db.session.commit()
         except:
             db.session.rollback()
-            return jsonify(code=101, data={'tip': '数据库异常'})
+            return jsonify(code=101, data={'error': '数据库异常'})
         return jsonify(code=0, data={'tip': '申请撤销成功'})
 
     # 检查是否已审核，已审核的预约信息无法修改
