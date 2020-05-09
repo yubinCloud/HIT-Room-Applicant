@@ -7,7 +7,7 @@ admin_notice_bp = Blueprint('admin_notice_bp', __name__)
 
 
 @admin_notice_bp.route('', methods=['GET', 'POST'])
-@adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2))
+#@adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2))
 def Adm_notice():
     # 获取json
     rev_json = request.get_json(silent=True)
@@ -51,7 +51,7 @@ def notice_list_GET(rev_json):
     if end_id > db_count:
         end_id = db_count
     # 从数据库中查询相应记录
-    notices = Notice.query.offset(db_count - end_id + 1).limit(end_id - start_id + 1).all()
+    notices = Notice.query.offset(db_count - end_id).limit(end_id - start_id + 1).all()
     res = [dict(id=record.notice_id, title=record.title, time=record.time)
            for record in notices]
     return res
