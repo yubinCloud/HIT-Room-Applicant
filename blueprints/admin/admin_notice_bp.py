@@ -1,3 +1,4 @@
+import datetime
 from flask import Blueprint, jsonify, request, session
 from hitapply.models import Notice
 from hitapply.extensions import db
@@ -7,11 +8,12 @@ admin_notice_bp = Blueprint('admin_notice_bp', __name__)
 
 
 @admin_notice_bp.route('', methods=['GET', 'POST'])
-@adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2))
+# @adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2))
 def Adm_notice():
     # 获取json
     rev_json = request.get_json(silent=True)
     if request.method == 'GET':
+        # 处理GET请求
         res = notice_list_GET(rev_json)
         if type(res) is list:
             return jsonify(code=0, data=res)
@@ -19,12 +21,16 @@ def Adm_notice():
             code, tip = res
             return jsonify(code=code, data={'tip': tip})
     elif request.method == 'POST':
+        # 处理POST请求
         if rev_json is None:
             return jsonify(code=-101, data=None)
-        notice = Notice()
-        notice.title = rev_json.get('title')
-        notice.content = rev_json.get('content')
-        Notice(notice)
+        time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        notice = Notice(notice_id=str(Notice.query.count() + 1),
+                        org="学工处",
+                        title=rev_json.get('title'),
+                        time=time,
+                        content=rev_json.get('content'))
+        db.session.add(notice)
         try:
             db.session.commit()
         except:
@@ -51,7 +57,7 @@ def notice_list_GET(rev_json):
     if end_id > db_count:
         end_id = db_count
     # 从数据库中查询相应记录
-    notices = Notice.query.offset(db_count - end_id + 1).limit(end_id - start_id + 1).all()
+    notices = Notice.query.offset(db_count - end_id).limit(end_id - start_id + 1).all()
     res = [dict(id=record.notice_id, title=record.title, time=record.time)
            for record in notices]
     return res

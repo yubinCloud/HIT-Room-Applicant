@@ -19,3 +19,5 @@
 |:----|:----|:----|:----|:---|
 |管理员登录|http://xx.com/api/admin/login|POST|adm_login|钟亦奇|
 |管理员登出|http://xx.com/api/admin/logout|POST|adm_logout|钟亦奇|
+|查看公告列表|http://xx.com/api/admin/notice|GET|adm_notice_bp|俞斌|
+|获取教室列表|http://xx.com/api/admin/room|GET|adm_room|俞斌|
