@@ -22,3 +22,5 @@
 |查看账号列表|http://xx.com/api/admin/logout|GET|account_about|向乾龙|
 |新增管理员账号|http://xx.com/api/admin/account|POST|account_about|向乾龙|
 |修改管理员账号|http://xx.com/api/admin/account/id|POST|admin_modify|向乾龙|
+|查看公告列表|http://xx.com/api/admin/notice|GET|adm_notice_bp|俞斌|
+|获取教室列表|http://xx.com/api/admin/room|GET|adm_room|俞斌|
