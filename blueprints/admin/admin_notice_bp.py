@@ -39,6 +39,7 @@ def Adm_notice():
 
         return jsonify(code=0, data={'tip': '新增公告成功'})
 
+
 def notice_list_GET(rev_json):
     """
     处理GET请求
