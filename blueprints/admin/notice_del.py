@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, session, request
-from extensions import db
+from hitapply.extensions import db
 from hitapply.models import Notice
 
 
