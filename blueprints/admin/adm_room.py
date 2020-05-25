@@ -2,12 +2,13 @@ from flask import Blueprint, jsonify, request
 from hitapply.common.functions import adm_login_required
 from hitapply.models import Room
 from hitapply.extensions import db
+from sqlalchemy import and_
 
 adm_room = Blueprint('adm_room', __name__)
 
 
 @adm_room.route('', methods=['GET', 'POST'])
-#@adm_login_required(get_grades=(1, 2, 3), post_grades=(1,))
+# @adm_login_required(get_grades=(1, 2, 3), post_grades=(1,))
 def Adm_room():
     """
     GET：查看教室列表
@@ -26,7 +27,7 @@ def Adm_room():
 
 
 @adm_room.route('/num', methods=['GET'])
-#@adm_login_required(get_grades=(1, 2, 3))
+# @adm_login_required(get_grades=(1, 2, 3))
 def Adm_room_num():
     """
     GET：获取教室数量
@@ -34,6 +35,28 @@ def Adm_room_num():
     """
     if request.method == "GET":
         return Adm_room_num_GET()
+
+
+@adm_room.route('/noadmin', methods=['GET'])
+# @adm_login_required(get_grades=(1, 2, 3))
+def Adm_room_noadmin():
+    """
+    GET：获取无管理员的教室
+    :return:
+    """
+    # 获取json
+    rev_json = request.get_json(silent=True)
+    if rev_json is None:
+        return jsonify(code=-101, data={'tip': '缺少必要参数'})
+
+    start_id, end_id = rev_json.get('start_id'), rev_json.get('end_id')
+    # 验证参数有效性
+    room_nums = Room.query.count()
+    if start_id > room_nums:
+        return jsonify(code=-102, tip='超过教室最大数量')
+    rooms = Room.query.filter(and_(Room.room_id >= start_id, Room.room_id <= end_id, Room.org == None)).all()
+    res_data = rooms_to_data(rooms)
+    return jsonify(code=0, data=res_data)
 
 
 def Adm_room_GET(rev_json):

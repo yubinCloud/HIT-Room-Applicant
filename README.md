@@ -25,4 +25,5 @@
 |查看公告列表|http://xx.com/api/admin/notice|GET|adm_notice_bp|俞斌|
 |获取教室列表|http://xx.com/api/admin/room|GET|adm_room|俞斌|
 |新增教室|http://xx.com/api/admin/room|POST|adm_room|俞斌|
-|获取教室总数量|http://xx.com/api/admin/room/num|GET|adm_room_num|俞斌|
+|获取教室总数量|http://xx.com/api/admin/room/num|GET|adm_room|俞斌|
+|获取无管理员的教室|http://xx.com/api/admin/room/noadmin|GET|adm_room|俞斌|
