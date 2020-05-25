@@ -40,6 +40,17 @@ def Adm_notice():
         return jsonify(code=0, data={'tip': '新增公告成功'})
 
 
+@admin_notice_bp.route('/num', methods=['GET'])
+# @adm_login_required(get_grades=(1, 2, 3))
+def Notice_list_num():
+    """
+    GET：获取公告数量
+    :return:
+    """
+    notice_num = Notice.query.count()
+    return jsonify(code=0, data={'num': notice_num})
+
+
 def notice_list_GET(rev_json):
     """
     处理GET请求
