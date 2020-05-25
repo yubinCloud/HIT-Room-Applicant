@@ -8,8 +8,9 @@ admin_login = Blueprint('admin_login', __name__)
 
 @admin_login.route('', methods = ['POST'])
 def Admin_Login():
-    username = request.json.get('username');
-    password = request.json.get('password');
+    rev_json = request.get_json(silent=True)
+    username = rev_json.get('username')
+    password = rev_json.get('password')
     if username is None or password is None:
         return jsonify(code=-101, data={"tip": "缺少必须参数"})
 

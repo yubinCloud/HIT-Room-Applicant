@@ -79,7 +79,7 @@ def register_blueprints(app):
 
     # http://xx.com/api/stu/notice/id
     # GET: 查看公告详情
-    app.register_blueprint(notice_info.notice_info, url_prefix='/api/stu/notice/<int:notice_id>')
+    app.register_blueprint(notice_info.notice_info, url_prefix='/api/stu/notice/<string:notice_id>')
 
     # http://xx.com/api/admin/login
     # POST: 管理员登录系统
@@ -101,7 +101,7 @@ def register_blueprints(app):
 
     # http://xx.com/api/admin/notice/id
     # POST: 删除公告
-    app.register_blueprint(notice_del.notice_del, url_prefix='/api/admin/notice/<int:notice_id>')
+    app.register_blueprint(notice_del.notice_del, url_prefix='/api/admin/notice/<string:notice_id>')
 
     # http://xx.com/api/admin/account
     # GET: 查看管理员账号列表

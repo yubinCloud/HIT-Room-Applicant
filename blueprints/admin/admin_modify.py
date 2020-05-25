@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from models import Administrator
+from hitapply.models import Administrator
 from hitapply.extensions import db
 from hitapply.common.functions import adm_login_required
 

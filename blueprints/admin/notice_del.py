@@ -1,27 +1,20 @@
 from flask import Blueprint, jsonify, session, request
 from hitapply.extensions import db
 from hitapply.models import Notice
-
+from hitapply.common.functions import adm_login_required
 
 notice_del = Blueprint('notice_del', __name__)
 
 
-@notice_del.route('', methods = ['POST'])
+@notice_del.route('', methods=['POST'])
+# @adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2))
 def Notice_del(notice_id):
-    account = session.get('admin_login')
-    if account is None:
-        return jsonify(code=-102, data={"tip": "用户未登录"})
-
-    json_data = request.get_json(silent=True)
-
-    if json_data is None:
-        return jsonify(code=-101, data=None)
-    notice = Notice.query.get(notice_id=notice_id)
+    notice = Notice.query.get(notice_id)
     try:
         db.session.delete(notice)
         db.session.commit()
-    except:
+    except Exception:
         db.session.rollback()
         return jsonify(code=101, data={'error': '数据库异常'})
 
-    return jsonify(code=0, data={'tip': ''})
+    return jsonify(code=0, data={'tip': '删除成功'})

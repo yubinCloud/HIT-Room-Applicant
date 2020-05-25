@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from hitapply.common.functions import adm_login_required
 from hitapply.models import Administrator
 from hitapply.extensions import db
+import hashlib
 
 account_about = Blueprint('account_about', __name__)
 
@@ -65,18 +66,17 @@ def admin_add(admin, rev_json):
     :param rev_json: 接收的json数据
     :return: (code, tip) 状态码及提示信息
     """
-    account_, password_, grade_, name_, org_, phone_ = rev_json.get('account'), rev_json.get('password'), \
+    account_, password_, grade_, name_, org_, phone_, = rev_json.get('account'), rev_json.get('password'), \
                                                        rev_json.get('grade'), rev_json.get('name'), \
                                                        rev_json.get('org'), rev_json.get('phone')
-    if None in [account_, password_, grade_]:
+    if None in [account_, password_, grade_, org_]:
         return -101, '缺少必需参数'
     admin.account = account_
-    admin.password = password_
+    admin.password = hashlib.new('md5', password_.encode()).hexdigest()
     admin.grade = grade_
+    admin.org = org_
     if name_:
         admin.name = name_
-    if org_:
-        admin.org = org_
     if phone_:
         admin.phone = phone_
     return 0, '新增管理员账号成功'
