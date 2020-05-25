@@ -69,7 +69,7 @@ def admin_add(admin, rev_json):
     account_, password_, grade_, name_, org_, phone_, = rev_json.get('account'), rev_json.get('password'), \
                                                        rev_json.get('grade'), rev_json.get('name'), \
                                                        rev_json.get('org'), rev_json.get('phone')
-    if None in [account_, password_, grade_, org_]:
+    if None in (account_, password_, grade_, org_):
         return -101, '缺少必需参数'
     admin.account = account_
     admin.password = hashlib.new('md5', password_.encode()).hexdigest()
