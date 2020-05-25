@@ -29,11 +29,11 @@ class Notice(db.Model):
 # 教室信息表
 class Room(db.Model):
     __table_args__ = {'extend_existing': True}
-    room_id = db.Column(db.String(255), primary_key=True, nullable=False)
+    room_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
     building = db.Column(db.String(255), nullable=False)
     floor = db.Column(db.Integer, nullable=False)
     room_name = db.Column(db.String(255), nullable=False)
-    org = db.Column(db.String(255), nullable=False)
+    org = db.Column(db.String(255))
     picture = db.Column(db.String(255))
     max_num = db.Column(db.Integer, nullable=False)
     permissible = db.Column(db.Boolean, nullable=False)
