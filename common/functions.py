@@ -41,8 +41,8 @@ def turn_to_int(a):
 
 
 def adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2, 3)):
-    """
-    对管理员等级进行限制
+    """对管理员等级进行限制
+    by yubin
     :param get_grades: GET请求时所允许的管理员等级
     :param post_grades: POST请求时所允许的管理员等级
     :return: 装饰后的视图函数
