@@ -35,6 +35,17 @@ def Adm_accout():
         return jsonify(code=code, data={'tip': tip})  # 返回成功
 
 
+@account_about.route('/num', methods=['GET'])
+# @adm_login_required(get_grades=(1, ))
+def Adm_accout_num():
+    """
+    GET：获取账号数量
+    :return:
+    """
+    account_num = Administrator.query.count()
+    return jsonify(code=0, data={'num':account_num})
+
+
 def account_list_GET(rev_json):
     """
     处理GET请求
