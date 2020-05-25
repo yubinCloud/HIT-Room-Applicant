@@ -134,7 +134,10 @@ def Adm_room_POST(rev_json):
                    description=description,
                    permissible=permissible)
     db.session.add(newRoom)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except:
+        db.session.rollback()
     return jsonify(data={'tip': '教室添加成功'})
 
 

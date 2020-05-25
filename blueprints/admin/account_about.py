@@ -8,7 +8,7 @@ account_about = Blueprint('account_about', __name__)
 
 
 @account_about.route('', methods=['GET', 'POST'])
-# @adm_login_required(get_grades=1, post_grades=1)
+# @adm_login_required(get_grades=(1, ), post_grades=(1, ))
 def Adm_accout():
     # 获取json
     rev_json = request.get_json(silent=True)
