@@ -19,6 +19,7 @@
 |:----|:----|:----|:----|:---|
 |管理员登录|http://xx.com/api/admin/login|POST|adm_login|钟亦奇|
 |管理员登出|http://xx.com/api/admin/logout|POST|adm_logout|钟亦奇|
+|获取用户信息|http://xx.com/api/admin/user|GET|
 |查看账号列表|http://xx.com/api/admin/logout|GET|account_about|向乾龙|
 |新增管理员账号|http://xx.com/api/admin/account|POST|account_about|向乾龙|
 |获取账号总数|http://xx.com/api/admin/account/num|GET|account_about|俞斌|
