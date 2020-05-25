@@ -25,6 +25,17 @@ def Adm_room():
         return Adm_room_POST(rev_json)
 
 
+@adm_room.route('/num', methods=['GET'])
+#@adm_login_required(get_grades=(1, 2, 3))
+def Adm_room_num():
+    """
+    GET：获取教室数量
+    :return:
+    """
+    if request.method == "GET":
+        return Adm_room_num_GET()
+
+
 def Adm_room_GET(rev_json):
     """
     处理Adm_room视图函数的GET请求
@@ -91,3 +102,11 @@ def Adm_room_POST(rev_json):
     db.session.add(newRoom)
     db.session.commit()
     return jsonify(data={'tip': '教室添加成功'})
+
+
+def Adm_room_num_GET():
+    """
+    处理Adm_room_num的GET请求
+    :return: 需要返回给前端的数据
+    """
+    return jsonify(code=0, data={'num': Room.query.count()})
