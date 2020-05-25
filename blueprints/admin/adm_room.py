@@ -59,6 +59,17 @@ def Adm_room_noadmin():
     return jsonify(code=0, data=res_data)
 
 
+@adm_room.route('/noadmin/num', methods=['GET'])
+# @adm_login_required(get_grades=(1, 2, 3))
+def Adm_room_noadmin_num():
+    """
+    GET：获取无管理员的教室数量
+    :return:
+    """
+    noadmin_room_num = Room.query.filter_by(org=None).count()
+    return jsonify(code=0, data=noadmin_room_num)
+
+
 def Adm_room_GET(rev_json):
     """
     处理Adm_room视图函数的GET请求
