@@ -20,8 +20,9 @@ def create_app(config_name=None):
     if config_name is None:
         config_name = os.getenv('FLASK_CONFIG', 'development')
 
-    app = Flask('hitapply')
+    app = Flask('HITRoomApply')
     app.config.from_object(config[config_name])
+    app.config['SESSION_COOKIE_HTTPONLY'] = False
 
     # 为app注册相关信息
     register_extensions(app)
