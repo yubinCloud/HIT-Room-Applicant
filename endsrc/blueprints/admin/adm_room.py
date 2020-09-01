@@ -52,7 +52,7 @@ def Adm_room_noadmin():
     # 验证参数有效性
     room_nums = Room.query.count()
     if start_id > room_nums:
-        return jsonify(code=-102, tip='超过教室最大数量')
+        return jsonify(code=-102, data={'tip': '超过教室最大数量'})
     rooms = Room.query.filter(and_(Room.room_id >= start_id, Room.room_id <= end_id, Room.org == None)).all()
     res_data = rooms_to_data(rooms)
     return jsonify(code=0, data=res_data)

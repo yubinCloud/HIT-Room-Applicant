@@ -30,7 +30,7 @@ def Admi_modify():
             db.session.commit()
         except:
             db.session.rollback()
-            return jsonify(code=101, data={'error': '数据库异常'})
+            return jsonify(code=101, data={'tip': '数据库异常'})
         return jsonify(code=code, data={'tip': tip})
 
 
