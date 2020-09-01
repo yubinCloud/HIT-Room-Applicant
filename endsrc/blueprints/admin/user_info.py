@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, session
 
-from src.models import Administrator
+from endsrc.models import Administrator
 
 user_info = Blueprint('user_info', __name__)
 

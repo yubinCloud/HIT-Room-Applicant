@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
-from src.models import Notice
-from src.extensions import db
+from endsrc.models import Notice
+from endsrc.extensions import db
 import datetime
 
 admin_notice_bp = Blueprint('admin_notice_bp', __name__)

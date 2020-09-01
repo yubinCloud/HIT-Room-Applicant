@@ -2,13 +2,13 @@ from flask import Flask
 import os
 import click
 
-from src.extensions import db
-from src.settings import config
-from src.blueprints.stu import room_floor_get, stu_apply, notice_info, notice_list, room_use_info, stu_apply_info, \
+from endsrc.extensions import db
+from endsrc.settings import config
+from endsrc.blueprints.stu import room_floor_get, stu_apply, notice_info, notice_list, room_use_info, stu_apply_info, \
     stu_room_use, room_info, time_get
-from src.blueprints.admin import admin_login, admin_logout, user_info, notice_del, admin_notice_bp, \
+from endsrc.blueprints.admin import admin_login, admin_logout, user_info, notice_del, admin_notice_bp, \
     account_about, adm_room, adm_myroom, admin_user
-from src.blueprints.admin import admin_modify
+from endsrc.blueprints.admin import admin_modify
 
 
 def create_app(config_name=None):

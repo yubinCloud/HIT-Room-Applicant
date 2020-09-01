@@ -3,7 +3,7 @@
 """
 from flask import jsonify, session, request
 import functools
-from src.models import Administrator
+from endsrc.models import Administrator
 
 
 # 检查一个字典中是否有一系列的key

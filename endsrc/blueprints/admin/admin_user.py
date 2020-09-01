@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, session
-from src.common.functions import adm_login_required
-from src.models import Administrator
+from endsrc.common.functions import adm_login_required
+from endsrc.models import Administrator
 
 
 admin_user = Blueprint('admin_user', __name__)

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from src.models import Administrator
-from src.extensions import db
+from endsrc.models import Administrator
+from endsrc.extensions import db
 import hashlib
 
 account_about = Blueprint('account_about', __name__)

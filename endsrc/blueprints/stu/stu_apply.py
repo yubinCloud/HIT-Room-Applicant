@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 
-from src.models import Apply
-from src.extensions import db
+from endsrc.models import Apply
+from endsrc.extensions import db
 import datetime
 
 
