@@ -36,7 +36,7 @@ def Adm_accout():
 
 @account_about.route('/num', methods=['GET'])
 # @adm_login_required(get_grades=(1, ))
-def Adm_accout_num():
+def Adm_account_num():
     """
     GET：获取账号数量
     :return:
