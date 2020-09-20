@@ -4,5 +4,5 @@ class DatabaseConst:
     MYSQL_PASSWORD = 'DZXxh990719!'
     MYSQL_HOST = '101.200.236.147'
     MYSQL_PORT = '3306'
-    MYSQL_DBNAME = 'HIT-Room_Applicant'
+    MYSQL_DBNAME = 'hitapply'
     MYSQL_CHARSET = 'utf8'
