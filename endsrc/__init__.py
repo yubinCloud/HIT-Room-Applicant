@@ -4,13 +4,8 @@ import click
 
 from endsrc.extensions import db
 from endsrc.settings import config
-from endsrc.blueprints.stu import room_floor_get, stu_apply, notice_info, notice_list, room_use_info, stu_apply_info, \
-    stu_room_use, room_info, time_get
-from endsrc.blueprints.admin.notice_manage import admin_notice_bp, notice_del
-from endsrc.blueprints.admin.login_manage import admin_login, admin_logout, admin_modify, admin_user
-from endsrc.blueprints.admin.room_manage import adm_room, adm_myroom
-from endsrc.blueprints.admin.account_manage import account_about
-
+from endsrc.blueprints.stu import *
+from endsrc.blueprints.admin import *
 
 def create_app(config_name=None):
     """
