@@ -6,9 +6,10 @@ from endsrc.extensions import db
 from endsrc.settings import config
 from endsrc.blueprints.stu import room_floor_get, stu_apply, notice_info, notice_list, room_use_info, stu_apply_info, \
     stu_room_use, room_info, time_get
-from endsrc.blueprints.admin import admin_login, admin_logout, user_info, notice_del, admin_notice_bp, \
-    account_about, adm_room, adm_myroom, admin_user
-from endsrc.blueprints.admin import admin_modify
+from endsrc.blueprints.admin.notice_manage import admin_notice_bp, notice_del
+from endsrc.blueprints.admin.login_manage import admin_login, admin_logout, admin_modify, admin_user
+from endsrc.blueprints.admin.room_manage import adm_room, adm_myroom
+from endsrc.blueprints.admin.account_manage import account_about
 
 
 def create_app(config_name=None):
@@ -90,9 +91,6 @@ def register_blueprints(app):
     # POST: 管理员退出登录
     app.register_blueprint(admin_logout.admin_logout, url_prefix='/api/admin/logout')
 
-    # http://xx.com/api/admin/user
-    # GET: 获取用户信息
-    app.register_blueprint(user_info.user_info, url_prefix='/api/admin/user')
 
     # http://xx.com/api/admin/notice
     # POST: 新增公告

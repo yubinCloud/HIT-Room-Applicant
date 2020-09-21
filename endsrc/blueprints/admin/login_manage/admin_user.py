@@ -15,6 +15,8 @@ def Admin_user():
     """
     # 查找出当前管理员
     cur_account = session.get('admin_login')  # 获取当前用户名
+    if cur_account is None:
+        return jsonify(code=-102, data={'tip': '用户未登录'})
     cur_admin = Administrator.query.filter_by(account=cur_account).first()
     if cur_admin is None:
         return jsonify(code=-102, tip='未查询到该管理员')
