@@ -3,8 +3,11 @@
 """
 from flask import jsonify, session, request
 import functools
-from endsrc.models import Administrator
+import traceback
+from datetime import datetime
 
+from endsrc.models import Administrator
+from endsrc.common import const
 
 # 检查一个字典中是否有一系列的key
 def check_key(aDict, *keys):
@@ -78,3 +81,14 @@ def adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2, 3)):
         return wrapped_func
 
     return login_decorator
+
+
+def record_exception(exception: Exception):
+    """
+    将错误报告给日志
+    :param exception: 产生的异常
+    """
+    const.LOGGING.warning(
+        '{} occur a exception {}:\n{}\n==========\n{}'
+            .format(datetime.now(), exception.__class__.__name__,exception.args, traceback.format_exc())
+    )
