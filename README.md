@@ -1,6 +1,6 @@
 # HIT-Room-Applicant 教室申请系统
 哈尔滨工业大学（威海）教室申请系统。
-后端由Flask搭建，代码位于`endsrc`中
+后端由Flask搭建
 
 ## 路由表
 
