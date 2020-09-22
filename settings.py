@@ -18,9 +18,10 @@ class DevelopmentConfig(BaseConfig):
 
 class TestingConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(DatabaseConst.MYSQL_USERNAME,
-                                                              DatabaseConst.MYSQL_PASSWORD,
-                                                              DatabaseConst.MYSQL_HOST, DatabaseConst.MYSQL_PORT,
-                                                              DatabaseConst.MYSQL_DBNAME)
+                                                                      DatabaseConst.MYSQL_PASSWORD,
+                                                                      DatabaseConst.MYSQL_HOST,
+                                                                      DatabaseConst.MYSQL_PORT,
+                                                                      DatabaseConst.MYSQL_DBNAME)
 
 
 config = {
