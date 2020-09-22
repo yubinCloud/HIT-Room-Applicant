@@ -1,7 +1,7 @@
 # http://xx.com/api/stu/timetable
 
 from flask import Blueprint, jsonify
-from endsrc.models import Timetable
+from models import Timetable
 
 time_get = Blueprint('time_get', __name__)
 

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
-from endsrc.models import Administrator
-from endsrc.models import db
+from models import Administrator
+from models import db
 
 admin_modify = Blueprint('admin_modify', __name__)
 

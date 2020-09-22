@@ -6,8 +6,8 @@ import functools
 import traceback
 from datetime import datetime
 
-from endsrc.models import Administrator
-from endsrc.common import const
+from models import Administrator
+from common import const
 
 # 检查一个字典中是否有一系列的key
 def check_key(aDict, *keys):

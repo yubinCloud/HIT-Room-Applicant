@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 
-from endsrc.models import Apply
-from endsrc.extensions import db
+from models import Apply
+from extensions import db
 
 
 stu_apply_info = Blueprint('stu_apply_info', __name__)

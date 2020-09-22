@@ -2,10 +2,10 @@ from flask import Flask
 import os
 import click
 
-from endsrc.extensions import db
-from endsrc.settings import config
-from endsrc.blueprints.stu import *
-from endsrc.blueprints.admin import *
+from extensions import db
+from settings import config
+from blueprints import *
+
 
 def create_app(config_name=None):
     """

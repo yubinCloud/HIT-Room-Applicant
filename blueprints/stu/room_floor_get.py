@@ -1,7 +1,7 @@
 # http://xx.com/api/stu/building
 
 from flask import Blueprint, jsonify
-from endsrc.models import Room
+from models import Room
 
 room_floor_get = Blueprint('room_number_get', __name__)
 

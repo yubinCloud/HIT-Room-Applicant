@@ -3,8 +3,8 @@
 from flask import Blueprint, request, jsonify
 from sqlalchemy import and_
 
-from endsrc.models import Apply, Room, Timetable
-from endsrc.common import functions
+from models import Apply, Room, Timetable
+from common import functions
 
 stu_room_use = Blueprint('stu_room_use', __name__)
 

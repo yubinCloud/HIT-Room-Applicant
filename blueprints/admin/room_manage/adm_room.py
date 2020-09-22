@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
-from endsrc.models import Room
-from endsrc.extensions import db
+from models import Room
+from extensions import db
 from sqlalchemy import and_
 
 adm_room = Blueprint('adm_room', __name__)

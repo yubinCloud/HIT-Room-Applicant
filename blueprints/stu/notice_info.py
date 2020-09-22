@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 
-from endsrc.models import Notice
+from models import Notice
 
 notice_info = Blueprint('notice_info', __name__)
 @notice_info.route('', methods = ['GET'])

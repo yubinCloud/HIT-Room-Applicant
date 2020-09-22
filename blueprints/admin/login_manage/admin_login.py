@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, session
 
-from endsrc.models import Administrator
+from models import Administrator
 
 import hashlib
 

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
-from endsrc.extensions import db
-from endsrc.models import Notice
+from extensions import db
+from models import Notice
 
 notice_del = Blueprint('notice_del', __name__)
 

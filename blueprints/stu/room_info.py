@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from endsrc.models import Room
+from models import Room
 
 room_info = Blueprint('room_info', __name__)
 

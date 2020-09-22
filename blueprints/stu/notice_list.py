@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from endsrc.models import Notice
+from models import Notice
 
 notice_list = Blueprint('notice_list', __name__)
 @notice_list.route('', methods = ['GET'])

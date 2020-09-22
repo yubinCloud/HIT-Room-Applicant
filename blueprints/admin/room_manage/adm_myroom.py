@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, session
-from endsrc.models import Room, Administrator
-from endsrc.extensions import db
+from models import Room, Administrator
+from extensions import db
 
 adm_myroom = Blueprint('adm_myroom', __name__)
 
