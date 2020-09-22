@@ -2,7 +2,7 @@
 数据库模型文件
 """
 
-from endsrc import db
+from . import db
 
 
 # 管理员账号信息表

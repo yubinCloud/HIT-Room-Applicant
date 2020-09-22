@@ -1,4 +1,4 @@
-from common import DatabaseConst
+from common.const import DatabaseConst
 import os
 
 
