@@ -9,6 +9,20 @@ from datetime import datetime
 from models import Administrator
 from common import const
 
+
+def send_json(error_code, result_data):
+    """
+    将处理后的数据发送给前端
+    :param error_code: 错误码
+    :param result_data: 结果数据
+    :return:
+    """
+    if error_code == 0:
+        return jsonify(code=0, data=result_data)
+    else:
+        return jsonify(code=error_code, data={'tip': result_data})
+
+
 # 检查一个字典中是否有一系列的key
 def check_key(aDict, *keys):
     for k in keys:
