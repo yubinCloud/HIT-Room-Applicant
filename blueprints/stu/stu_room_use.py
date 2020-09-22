@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify
 from sqlalchemy import and_
 
 from models import Apply, Room, Timetable
-from common import functions
+from common import utils
 
 stu_room_use = Blueprint('stu_room_use', __name__)
 
@@ -91,7 +91,7 @@ def stu_room_use_info():
 
     # 检查json数据是否有缺少
     try:
-        functions.check_key(rev_json, 'data', 'building')
+        utils.check_key(rev_json, 'data', 'building')
     except KeyError:
         return jsonify(code=-101, data=None)
 
