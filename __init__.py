@@ -111,6 +111,9 @@ def register_blueprints(app):
     # POST: 新增教室
     # http://xx.com/api/admin/room/num
     # GET：获取教室数量
+    # http://xx.com/api/admin/room/<string:room_id>
+    # GET: 查看某个教室信息
+    # POST: 修改教室信息
     app.register_blueprint(adm_room.adm_room, url_prefix='/api/admin/room')
 
     # http://xx.com/api/admin/myroom
