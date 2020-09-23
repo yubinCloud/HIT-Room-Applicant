@@ -123,3 +123,6 @@ def register_blueprints(app):
     # http://xx.com/api/admin/user
     # GET: 获取用户信息
     app.register_blueprint(admin_user.admin_user, url_prefix='/api/admin/user')
+
+    # http://xx.com/api/admin/apply
+    app.register_blueprint(admin_apply.admin_apply, url_prefix='/api/admin/apply')
