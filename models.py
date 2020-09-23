@@ -1,7 +1,8 @@
 """
 数据库模型文件
 """
-from . import db
+
+from extensions import db
 
 
 # 管理员账号信息表

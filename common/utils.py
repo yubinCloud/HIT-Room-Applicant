@@ -70,7 +70,7 @@ def adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2, 3)):
         :return: 装饰后的视图函数
         """
 
-        @functools.wraps(view_func)
+        @functools.wraps(view_func)  # 使其能够保持view_func的原有函数名和函数属性
         def wrapped_func(*args, **kwargs):
             """
             完成对管理员等级的验证，并转发参数给func
@@ -81,7 +81,7 @@ def adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2, 3)):
             account = session.get('admin_login')
             if account is None:  # 验证是否登录
                 return jsonify(code=-102, data={'tip': '用户未登录'})
-            cur_grade = Administrator.query.filter(Administrator.account == account).first()
+            cur_grade = Administrator.query.filter(Administrator.account == account).first().grade
             # 验证管理员等级
             if request.method == 'GET':
                 if cur_grade not in get_grades:

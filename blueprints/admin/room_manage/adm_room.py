@@ -1,4 +1,6 @@
 from flask import Blueprint, jsonify, request
+
+from common.utils import adm_login_required, send_json, record_exception
 from models import Room
 from extensions import db
 from sqlalchemy import and_
@@ -7,7 +9,7 @@ adm_room = Blueprint('adm_room', __name__)
 
 
 @adm_room.route('', methods=['GET', 'POST'])
-# @adm_login_required(get_grades=(1, 2, 3), post_grades=(1,))
+@adm_login_required(get_grades=(1, 2, 3), post_grades=(1,))
 def Adm_room():
     """
     GET：查看教室列表
@@ -26,7 +28,7 @@ def Adm_room():
 
 
 @adm_room.route('/num', methods=['GET'])
-# @adm_login_required(get_grades=(1, 2, 3))
+@adm_login_required(get_grades=(1, 2, 3))
 def Adm_room_num():
     """
     GET：获取教室数量
@@ -67,6 +69,65 @@ def Adm_room_noadmin_num():
     """
     noadmin_room_num = Room.query.filter_by(org=None).count()
     return jsonify(code=0, data=noadmin_room_num)
+
+
+@adm_room.route('/<string:room_id>', methods=['GET', 'POST'])
+# @adm_login_required(get_grades=(1, 2, 3))
+def Adm_room_info(room_id):
+    """
+    GET：查看教室信息
+    POST：修改教室信息
+    :param room_id:
+    :return:
+    """
+    if request.method == 'GET':
+        room = Room.query.get(room_id)
+        result_data = {
+            'building': room.building,
+            'floor': room.floor,
+            'room_name': room.room_name,
+            'org': room.org,
+            'permissible': room.permissible,
+            'picture': room.picture,
+            'description': room.description
+        }
+        return send_json(0, result_data)
+    else:
+        rev_json = request.get_json(silent=True)
+
+        opr_type = rev_json.get('type')
+        if opr_type is None: return send_json(-101, '缺少type参数')
+
+        room = Room.query.get(room_id)
+        room_name = room.room_name
+
+        if opr_type == 'delete':
+            db.session.delete(room)
+            try:
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
+                record_exception(e)
+                return send_json(-101, '数据库异常')
+            return send_json(0, '教室 {} 信息删除成功'.format(room_name))
+        elif opr_type == 'update':
+            optional_args = {'building', 'floor', 'room_name', 'picture', 'max_num', 'description', 'permissible'}
+            for k, v in rev_json.items():
+                if k in optional_args:
+                    room.__setattr__(k, v)
+            try:
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
+                record_exception(e)
+                return send_json(-101, '数据库异常')
+            return send_json(0, '教室 {} 信息更新成功'.format(room_name))
+        else:
+            return send_json(-102, '对数据库的操作类型错误')
+
+
+
+
 
 
 def Adm_room_GET(rev_json):

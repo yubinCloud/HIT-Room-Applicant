@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, session
-from common import adm_login_required
+from common.utils import adm_login_required
 from models import Administrator
 
 
