@@ -24,6 +24,9 @@
 |移入/移出教室|http://xx.com/api/admin/myroom|POST|adm_myroom|yb|
 |查看教室信息|/api/admin/room/<string:room_id>|GET|adm_room|yb|
 |修改教室信息|/api/admin/room/<string:room_id>|GET|adm_room|yb|
+|查看教室状态|/api/admin/apply/room |GET|admin_apply|yb|
+|获取申请列表|/api/admin/apply|GET|admin_apply|yb|
+
 
 
 
