@@ -1,6 +1,7 @@
 from flask import Flask
 import os
 import click
+from flask_cors import *
 
 from extensions import db
 from settings import config
@@ -17,6 +18,7 @@ def create_app(config_name=None):
         config_name = os.getenv('FLASK_CONFIG', 'development')
 
     app = Flask('HITRoomApply')
+    CORS(app, supports_credentials=True)  # 使其支持跨域请求
     app.config.from_object(config[config_name])
     app.config['SESSION_COOKIE_HTTPONLY'] = False
 
