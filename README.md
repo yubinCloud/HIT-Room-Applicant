@@ -29,7 +29,7 @@
 |查看申请详情|/api/admin/apply/\<string:apply_id>|GET|admin_apply|yb|
 |审批一条申请|/api/admin/apply/\<string:apply_id>|GET|admin_apply|yb|
 |查看时间表| /api/admin/timetable|GET|admin_timetable|yb|
-|修改时间表|/api/admin/timetable/POST|admin_timetable|yb|
+|修改时间表|/api/admin/timetable|POST|admin_timetable|yb|
 
 
 
