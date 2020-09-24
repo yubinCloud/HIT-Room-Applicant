@@ -65,7 +65,7 @@ def register_blueprints(app):
 
     # http://xx.com/api/stu/timetable
     # GET: 获取时间表
-    app.register_blueprint(time_get.time_get, url_prefix='/api/stu/timetable')
+    app.register_blueprint(time_get.time_get, url_prefix='/api/stu/timetable_manage')
 
     # http://xx.com/api/stu/apply
     # POST: 学生提交教室申请
@@ -128,3 +128,6 @@ def register_blueprints(app):
 
     # http://xx.com/api/admin/apply
     app.register_blueprint(admin_apply.admin_apply, url_prefix='/api/admin/apply')
+
+    # http://xx.com/api/admin/timetable
+    app.register_blueprint(admin_timetable.admin_timetable, url_prefix='/api/admin/timetable')
