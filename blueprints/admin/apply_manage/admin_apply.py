@@ -1,7 +1,7 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 
 from common.utils import adm_login_required, send_json, record_exception
-from models import Apply
+from models import Apply, Administrator
 from extensions import db
 from sqlalchemy import and_
 
@@ -46,6 +46,7 @@ def acquire_apply_list():
     """
     rev_json = request.get_json(silent=True)
 
+    # 当 method 为 GET 时
     if request.method == 'GET':
         apply_status_type = rev_json.get('type')
         if apply_status_type is None:
@@ -68,8 +69,69 @@ def acquire_apply_list():
 
         return send_json(0, result_data)
 
+    # 当 method 为 POST 时
     else:
         pass
+
+
+@admin_apply.route('/<string:apply_id>', methods=['GET', 'POST'])
+def apply_detail(apply_id):
+    if request.method == 'GET':
+        apply = Apply.query.get(apply_id)
+        if apply is None:
+            return send_json(-102, '查询不到该申请')
+        result_data = {
+            'room_num': apply.room_name,
+            'applicant': apply.applicant_id,
+            'applicant_name': apply.applicant_name,
+            'begin_time': apply.begin_time,
+            'end_time': apply.end_time,
+            'request': apply.request,
+            'check_status': apply.check_status,
+            'note': apply.note,
+            'verifier_name': apply.verifier_name,
+            'teacher_name': apply.teacher_name,
+            'material': apply.material,
+            'org': apply.org,
+            'building': apply.building,
+            'floor': apply.floor,
+            'room_name': apply.room_name
+        }
+        return send_json(0, result_data)
+
+    else:
+        rev_json = request.get_json(silent=True)
+        verifier_id, is_pass = rev_json.get('verifier_id'), rev_json.get('is_pass')
+        if verifier_id is None or is_pass is None:
+            return send_json(-101, '缺少必要参数')
+        if is_pass not in {0, 1, 2}:
+            return send_json(-102, 'is_pass参数不符合要求')
+
+        admin_account = session.get('admin_login')  # 经adm_login_required装饰器验证后，登录的管理员一定存在
+        cur_admin = Administrator.query.get(admin_account)
+
+        apply = Apply.query.get(apply_id)
+        if apply is None:
+            return send_json(-102, '查询不到该教室')
+
+        apply.verifier_name = cur_admin.name
+        apply.org = cur_admin.org
+        apply.check_status = {
+            0: '审核通过', 1: '审核失败', 2: '待审核'
+        }.get(is_pass)
+
+        for k, v in rev_json.items:
+            if k in ('note', 'building', 'floor', 'room_name'):
+                apply.__setattr__(k ,v)
+
+        try:
+            db.session.commit()
+        except Exception as e:
+            record_exception(e)
+            return send_json(101, '数据库异常')
+        return send_json(0, {'tip': '审批成功'})
+
+
 
 
 
