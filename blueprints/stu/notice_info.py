@@ -3,8 +3,8 @@ from flask import Blueprint, jsonify
 from models import Notice
 
 notice_info = Blueprint('notice_info', __name__)
-@notice_info.route('', methods = ['GET'])
 
+@notice_info.route('', methods = ['GET'])
 def Notice_Info(notice_id):
     if notice_id == 0:
         length = len(Notice.query.all())
