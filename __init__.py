@@ -3,12 +3,11 @@ import os
 import click
 from flask_cors import *
 import sys
-
-sys.path.append('.')
-
 from extensions import db
 from settings import config
 from blueprints import *
+
+sys.path.append('.')
 
 
 def create_app(config_name=None):
@@ -45,48 +44,27 @@ def register_commands(app):
 
 
 def register_blueprints(app):
-
+    #-------------------------/blueprints/stu----------------------
     # http://xx.com/api/stu/notice
-    # GET: 查看公告列表
+    # GET: 查看公告列表和公告详情
     app.register_blueprint(notice.notice, url_prefix='/api/stu/notice')
 
-    # http://xx.com/api/stu/notice/id
-    # GET: 查看公告详情
-    app.register_blueprint(notice.notice, url_prefix='/api/stu/notice/')
-
     # http://xx.com/api/stu/building
-    # GET: 获取全部楼号
-    app.register_blueprint(room.room, url_prefix='/api/stu')
-
-    # http://xx.com/api/stu/room/use/id
-    # GET: 教室使用说明
-    app.register_blueprint(room.room, url_prefix='/api/stu')
-    # app.register_blueprint(room_use_info.room_use_info, url_prefix='/api/stu/room/use/<string:room_id>')
-
-    # http://xx.com/api/stu/room/id
-    # GET: 查看教室介绍
-    app.register_blueprint(room.room, url_prefix='/api/stu')
-    # app.register_blueprint(room_info.room_info, url_prefix='/api/stu/room/<string:room_id>')
-
-    # http://xx.com/stu/room/use
-    # GET: 教室使用情况
+    # GET: 获取全部楼号、教室使用说明、查看教室介绍、教室使用情况
     app.register_blueprint(room.room, url_prefix='/api/stu')
 
     # http://xx.com/api/stu/apply
-    # POST: 学生提交教室申请
-    # GET: 我的申请列表
-    app.register_blueprint(stu_apply.stu_apply, url_prefix='/api/stu/apply')
-
-
-    # http://xx.com/stu/apply/id
-    # GET：我的申请详细内容
-    # POST：修改申请内容
-    app.register_blueprint(stu_apply_info.stu_apply_info, url_prefix='/api/stu/apply/<string:apply_id>')
+    # POST: 学生提交教室申请、学生修改未审核的申请
+    # GET: 所有申请列表、某个apply_id对应的申请
+    app.register_blueprint(student.student, url_prefix='/api/stu/apply')
 
     # http://xx.com/api/stu/timetable
     # GET: 获取时间表
     app.register_blueprint(time_get.time_get, url_prefix='/api/stu/timetable')
 
+
+
+    #-------------------------/blueprints/admin----------------------
     # http://xx.com/api/admin/login
     # POST: 管理员登录系统
     app.register_blueprint(admin_login.admin_login, url_prefix='/api/admin/login')
@@ -95,12 +73,10 @@ def register_blueprints(app):
     # POST: 管理员退出登录
     app.register_blueprint(admin_logout.admin_logout, url_prefix='/api/admin/logout')
 
-
     # http://xx.com/api/admin/notice
     # POST: 新增公告
     # GET: 查看公告列表
     app.register_blueprint(admin_notice_bp.admin_notice_bp, url_prefix='/api/admin/notice')
-
 
     # http://xx.com/api/admin/notice/id
     # POST: 删除公告

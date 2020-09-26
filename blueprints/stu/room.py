@@ -85,18 +85,11 @@ def modify_res_data(res_data, records, timetable):
 @room.route('/room/use')
 def stu_room_use_info():
     # 获取json
-    rev_json = request.get_json(silent=True)
-
+    date = request.args.get('date')
+    building = request.args.get('building')
     # 检查json数据是否有缺少
-    try:
-        utils.check_key(rev_json, 'date', 'building')
-    except KeyError:
+    if date is None or building is None:
         return jsonify(code=-101, data=None)
-
-    # 解析json数据
-    date = rev_json.get('date')
-    building = rev_json.get('building')
-
     # 获取时间表的信息
     timetable = Timetable.query.all()
 
@@ -143,9 +136,8 @@ def RoomUseInfo(room_id):
     :param room_id:在Room数据表中的主键
     :return:json
     """
-    json_data = request.get_json(silent=True)
-    date = json_data.get("date")
-    time = json_data.get("time")
+    date = request.args.get("date")
+    time = request.args.get("time")
     if not (date and time):
         # 缺请求参数
         return jsonify(code=-101, data={})

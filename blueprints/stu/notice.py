@@ -9,6 +9,9 @@
 """
 from flask import Blueprint, jsonify, request
 from models import Notice
+from extensions import db
+
+
 
 # 注册Blueprint
 notice = Blueprint('notice', __name__)
@@ -36,9 +39,8 @@ def Notice_Info(notice_id):
             }
         }
     """
-    if notice_id == 'id':
-        length = len(Notice.query.all())
-        record = Notice.query.get(length)
+    if notice_id == '-1':
+        record = Notice.query.all()[-1]
         if record is None:
             return jsonify(code=101, data={'tip': '数据库查询失败'})
         else:
@@ -77,9 +79,8 @@ def Notice_List():
     }
     :return:从startid到endid的公告
     """
-    json_data = request.get_json(silent=True)
-    start_id = json_data.get('startid')
-    end_id = json_data.get('endid')
+    start_id = int(request.args.get('startid'))
+    end_id = int(request.args.get('endid'))
     if start_id and end_id:
         index = start_id
         data = []
