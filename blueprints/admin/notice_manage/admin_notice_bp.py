@@ -8,7 +8,7 @@ admin_notice_bp = Blueprint('admin_notice_bp', __name__)
 
 @admin_notice_bp.route('', methods=['GET', 'POST'])
 # @adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2))
-def Adm_notice():
+def admin_notice_handler():
     if request.method == 'GET':
         # 处理GET请求
         rev_json = request.args
