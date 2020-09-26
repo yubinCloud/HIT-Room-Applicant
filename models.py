@@ -51,7 +51,7 @@ class Timetable(db.Model):
 # 预约信息表
 class Apply(db.Model):
     __table_args__ = {'extend_existing': True}
-    apply_id = db.Column(db.String(255), primary_key=True, nullable=False)
+    apply_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
     activity_name = db.Column(db.String(255), nullable=False)
     applicant_id = db.Column(db.String(255), nullable=False)
     applicant_name = db.Column(db.String(255), nullable=False)
