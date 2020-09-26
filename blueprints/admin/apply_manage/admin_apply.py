@@ -80,6 +80,9 @@ def acquire_apply_list():
         if len(apply_list) == 0:
             return send_json(0, '待修改列表数据为空')
 
+        admin = Administrator.query.get(session.get('username'))
+
+
         success_list = list()
         for one_apply in apply_list:
             activity_name = one_apply.get('activity_name')
@@ -97,7 +100,8 @@ def acquire_apply_list():
                                      applicant_name=applicant_name, applicant_phone=applicant_phone,
                                      apply_time=datetime.now(), use_date=use_date, begin_time=begin_time,
                                      end_time=end_time, people_count=-1, room_name=room_name,
-                                     building=building, floor=floor, teacher_name='', check_status='审核通过')
+                                     building=building, floor=floor, teacher_name='', check_status='审核通过',
+                                     org=admin.org, verifier_name=admin.name)
             db.session.add(one_apply_record)
             try:
                 db.session.commit()
