@@ -7,7 +7,7 @@ admin_modify = Blueprint('admin_modify', __name__)
 
 @admin_modify.route('', methods=['POST'])
 # @adm_login_required(post_grades=1)
-def Admi_modify():
+def admin_modify_handler():
     # 获取json
     rev_json = request.get_json(silent=True)
     type_, account_ = rev_json.get('type'), rev_json.get('account')
