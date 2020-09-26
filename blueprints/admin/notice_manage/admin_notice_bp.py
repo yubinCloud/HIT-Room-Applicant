@@ -59,6 +59,8 @@ def notice_list_GET(rev_json):
     """
     # 获取参数
     start_id, end_id = rev_json.get('start_id'), rev_json.get('end_id')
+    start_id = int(start_id)
+    end_id = int(end_id)
     if start_id is None or end_id is None:  # 检查是否缺失参数
         return -101, None
     # 计算真正应该返回的公告id范围
