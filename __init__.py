@@ -45,21 +45,23 @@ def register_blueprints(app):
     # POST：修改申请内容
     app.register_blueprint(stu_apply_info.stu_apply_info, url_prefix='/api/stu/apply/<string:apply_id>')
 
+    # http://xx.com/api/stu/building
+    # GET: 获取全部楼号
+    app.register_blueprint(room.room, url_prefix='/api/stu')
+
     # http://xx.com/api/stu/room/use/id
     # GET: 教室使用说明
-    app.register_blueprint(room_use_info.room_use_info, url_prefix='/api/stu/room/use/<string:room_id>')
+    app.register_blueprint(room.room, url_prefix='/api/stu')
+    # app.register_blueprint(room_use_info.room_use_info, url_prefix='/api/stu/room/use/<string:room_id>')
 
     # http://xx.com/api/stu/room/id
     # GET: 查看教室介绍
-    app.register_blueprint(room_info.room_info, url_prefix='/api/stu/room/<string:room_id>')
+    app.register_blueprint(room.room, url_prefix='/api/stu')
+    # app.register_blueprint(room_info.room_info, url_prefix='/api/stu/room/<string:room_id>')
 
     # http://xx.com/stu/room/use
     # GET: 教室使用情况
-    app.register_blueprint(stu_room_use.stu_room_use, url_prefix='/api/stu/room/use')
-
-    # http://xx.com/api/stu/building
-    # GET: 获取全部楼号
-    app.register_blueprint(room_floor_get.room_floor_get, url_prefix='/api/stu/building')
+    app.register_blueprint(room.room, url_prefix='/api/stu')
 
     # http://xx.com/api/stu/timetable
     # GET: 获取时间表
