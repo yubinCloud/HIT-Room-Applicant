@@ -24,7 +24,7 @@ def Adm_notice():
         if rev_json is None:
             return jsonify(code=-101, data=None)
         time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        notice = Notice(notice_id=str(Notice.query.count() + 1),
+        notice = Notice(notice_id=0,
                         org="学工处",
                         title=rev_json.get('title'),
                         time=time,

@@ -19,7 +19,7 @@ class Administrator(db.Model):
 # 公告信息表
 class Notice(db.Model):
     __table_args__ = {'extend_existing': True}
-    notice_id = db.Column(db.String(255), primary_key=True, nullable=False)
+    notice_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
     org = db.Column(db.String(255), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     time = db.Column(db.DateTime, nullable=False)
