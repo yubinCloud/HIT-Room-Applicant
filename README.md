@@ -36,15 +36,15 @@
 ### 学生端相关路由函数
 |API |url|请求方式|文件名|负责人|
 |:----|:----|:----|:----|:---|
-|查看公告列表|http://xx.com/api/stu/notice|GET|notice_list.py|wz|
-|查看公告详情|http://xx.com/api/stu/notice/id|GET|notice_info.py|wz|
-|获取全部楼号|http://xx.com/api/stu/building|GET|room_floor_get.py|xql|
-|获取时间表|http://xx.com/api/stu/timetable|GET|time_get.py|xql|
-|教室使用情况|http://xx.com/api/stu/room/use|GET|stu_room_use.py|yb|
-|教室使用说明|http://xx.com/api/stu/room/use/id|GET|room_use_info.py|zyq|
-|查看教室介绍|http://xx.com/api/stu/room/id|GET|room_info.py|zyq|
-|我的申请列表|http://xx.com/api/stu/apply|GET|stu_apply.py|yb|
+|查看公告列表|http://xx.com/api/stu/notice|GET|notice.py|wz|
+|查看公告详情|http://xx.com/api/stu/notice/id|GET|notice.py|wz|
+|获取全部楼号|http://xx.com/api/stu/building|GET|room.py|xql|
+|教室使用说明|http://xx.com/api/stu/room/use/id|GET|room.py|zyq|
+|查看教室介绍|http://xx.com/api/stu/room/id|GET|room.py|zyq|
+|教室使用情况|http://xx.com/api/stu/room/use|GET|room.py|yb|
 |我的申请详细内容|http://xx.com/api/stu/apply/id|GET|stu_apply_info.py|yb|
 |修改申请内容|http://xx.com/api/stu/apply/id|POST|stu_apply_info.py|xql|
 |学生提交教室申请|http://xx.com/api/stu/apply|POST|stu_apply.py|wz|
+|我的申请列表|http://xx.com/api/stu/apply|GET|stu_apply.py|yb|
 |上传教室申请材料图片|http://xx.com/api/stu/apply/image|POST|||
+|获取时间表|http://xx.com/api/stu/timetable|GET|time_get.py|xql|

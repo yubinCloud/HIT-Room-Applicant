@@ -1,5 +1,3 @@
-# http://xx.com/api/stu/timetable
-
 from flask import Blueprint, jsonify
 from models import Timetable
 

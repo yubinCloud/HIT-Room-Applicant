@@ -1,14 +1,12 @@
-# http://xx.com/stu/room/use
-
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify, request
+from models import Room, Apply, Timetable
 from sqlalchemy import and_
-
-from models import Apply, Room, Timetable
 from common import utils
 
-stu_room_use = Blueprint('stu_room_use', __name__)
+room = Blueprint('room', __name__)
 
 
+# 以下函数均用于帮助获取教室使用情况
 # 创建一个原始的res_data
 def create_res_data(rooms, timetable_len):
     res_data = dict()
@@ -84,21 +82,14 @@ def modify_res_data(res_data, records, timetable):
 
 
 # GET:查看教室使用情况
-@stu_room_use.route('/')
+@room.route('/room/use')
 def stu_room_use_info():
     # 获取json
-    rev_json = request.get_json(silent=True)
-
+    date = request.args.get('date')
+    building = request.args.get('building')
     # 检查json数据是否有缺少
-    try:
-        utils.check_key(rev_json, 'data', 'building')
-    except KeyError:
+    if date is None or building is None:
         return jsonify(code=-101, data=None)
-
-    # 解析json数据
-    date = rev_json.get('date')
-    building = rev_json.get('building')
-
     # 获取时间表的信息
     timetable = Timetable.query.all()
 
@@ -114,3 +105,76 @@ def stu_room_use_info():
     modify_res_data(res_data, records, timetable)
 
     return jsonify(code=0, data=res_data)
+
+# 获取全部楼号
+@room.route('/building', methods=['GET'])
+def room_number_fun():
+    """
+    获取全部楼号
+    http://xx.com/api/stu/building
+    :return: json
+    """
+    room_list = Room.query.all()  # 获取Room表所有教室信息
+    s = set()
+    for i in room_list:
+        s.add(i.building)
+    room_data = {}
+    for i in s:
+        room_data[i] = {}
+    for i in room_list:
+        if i.floor not in room_data[i.building]:
+            room_data[i.building][i.floor] = []
+    for i in room_list:
+        room_data[i.building][i.floor].append(i.room_name)
+    return jsonify(code=0, data=room_data)
+
+# 查看教室使用说明
+@room.route('/room/use/<string:room_id>', methods=['GET'])
+def RoomUseInfo(room_id):
+    """
+    查看教室使用说明
+    :param room_id:在Room数据表中的主键
+    :return:json
+    """
+    date = request.args.get("date")
+    time = request.args.get("time")
+    if not (date and time):
+        # 缺请求参数
+        return jsonify(code=-101, data={})
+
+    # 根据房间号获取房间名
+    data = Room.query.filter(Room.room_id == room_id).first()
+    if not data:
+        return jsonify(code=-102, data={})
+    room_name = data.room_name
+
+    # 获取所属组织和活动名
+    duration = Timetable.query.filter(Timetable.class_id == time).first()
+    if not duration:
+        return jsonify(code=-102, data={})
+    begin_time = duration.begin_time
+    end_time = duration.end_time
+    result = Apply.query.filter(Apply.begin_time == begin_time and Apply.end_time == end_time and
+                                Apply.use_date == date and Apply.room_name == room_name).first()
+    if not result:
+        print('here')
+        return jsonify(code=-102, data={})
+    else:
+        return jsonify(code=0, data={"organization": result.applicant_name, "activity": result.activity_name})
+
+
+# 查看教室介绍
+@room.route('/room/<string:room_id>', methods=['GET'])
+def RoomInfo(room_id):
+    # 在数据库中查找教室信息
+    record = Room.query.get(room_id)
+    if record is None:
+        return jsonify(code=-102, data={})
+    else:
+        return jsonify(code=0, data={
+            "id": record.room_id,
+            "org": record.org,
+            "picture": record.picture,
+            "max_num": record.max_num,
+            "description": record.description
+        })
