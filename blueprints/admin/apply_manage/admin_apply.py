@@ -80,7 +80,7 @@ def acquire_apply_list():
         if len(apply_list) == 0:
             return send_json(0, '待修改列表数据为空')
 
-        admin = Administrator.query.get(session.get('username'))
+        admin = Administrator.query.get(session.get('admin_login'))
 
 
         success_list = list()
