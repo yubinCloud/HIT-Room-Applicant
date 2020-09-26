@@ -10,8 +10,8 @@ account_about = Blueprint('account_about', __name__)
 # @adm_login_required(get_grades=(1, ), post_grades=(1, ))
 def Adm_account():
     # 获取json
-    rev_json = request.get_json(silent=True)
     if request.method == 'GET':  # 处理GET请求
+        rev_json = request.args
         res = account_list_GET(rev_json)
         if type(res) == list:  # 成功返回数据
             return jsonify(code=0, data=res)
@@ -19,6 +19,7 @@ def Adm_account():
             code, tip = res
             return jsonify(code=code, data={'tip': tip})
     elif request.method == 'POST':  # 处理POST请求
+        rev_json = request.get_json(silent=True)
         if rev_json is None:  # json为空
             return jsonify(code=-101, data=None)
         admin = Administrator()

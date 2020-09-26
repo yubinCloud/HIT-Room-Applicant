@@ -16,14 +16,14 @@ def Adm_room():
     POST：新增教室
     :return:
     """
-    # 获取json
-    rev_json = request.get_json(silent=True)
-    if rev_json is None:
-        return jsonify(code=-101, data={'tip': '缺少必要参数'})
-
     if request.method == 'GET':
+        rev_json = request.args
         return Adm_room_GET(rev_json)
     if request.method == 'POST':
+        # 获取json
+        rev_json = request.get_json(silent=True)
+        if rev_json is None:
+            return jsonify(code=-101, data={'tip': '缺少必要参数'})
         return Adm_room_POST(rev_json)
 
 
@@ -46,7 +46,7 @@ def Adm_room_noadmin():
     :return:
     """
     # 获取json
-    rev_json = request.get_json(silent=True)
+    rev_json = request.args
     if rev_json is None:
         return jsonify(code=-101, data={'tip': '缺少必要参数'})
 

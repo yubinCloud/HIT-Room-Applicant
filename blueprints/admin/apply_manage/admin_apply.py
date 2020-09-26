@@ -44,10 +44,9 @@ def acquire_apply_list():
     POST：修改申请列表
     :return:
     """
-    rev_json = request.get_json(silent=True)
-
     # 当 method 为 GET 时
     if request.method == 'GET':
+        rev_json = request.args
         apply_status_type = rev_json.get('type')
         if apply_status_type is None:
             return send_json(-101, '缺少必要参数')
@@ -76,6 +75,7 @@ def acquire_apply_list():
 
 @admin_apply.route('/<string:apply_id>', methods=['GET', 'POST'])
 def apply_detail(apply_id):
+    # GET:
     if request.method == 'GET':
         apply = Apply.query.get(apply_id)
         if apply is None:
@@ -99,6 +99,7 @@ def apply_detail(apply_id):
         }
         return send_json(0, result_data)
 
+    # POST:
     else:
         rev_json = request.get_json(silent=True)
         verifier_id, is_pass = rev_json.get('verifier_id'), rev_json.get('is_pass')
