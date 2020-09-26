@@ -22,6 +22,15 @@
 |获取无管理员的教室|http://xx.com/api/admin/room/noadmin|GET|adm_room|yb|
 |获取无管理员教室数量|http://xx.com/api/admin/room/noadmin/num|GET|adm_room|yb|
 |移入/移出教室|http://xx.com/api/admin/myroom|POST|adm_myroom|yb|
+|查看教室信息|/api/admin/room/\<string:room_id>|GET|adm_room|yb|
+|修改教室信息|/api/admin/room/\<string:room_id>|GET|adm_room|yb|
+|查看教室状态|/api/admin/apply/room |GET|admin_apply|yb|
+|获取申请列表|/api/admin/apply|GET|admin_apply|yb|
+|查看申请详情|/api/admin/apply/\<string:apply_id>|GET|admin_apply|yb|
+|审批一条申请|/api/admin/apply/\<string:apply_id>|GET|admin_apply|yb|
+|查看时间表| /api/admin/timetable|GET|admin_timetable|yb|
+|修改时间表|/api/admin/timetable|POST|admin_timetable|yb|
+
 
 
 ### 学生端相关路由函数

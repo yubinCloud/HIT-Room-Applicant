@@ -1,6 +1,10 @@
 from flask import Flask
 import os
 import click
+from flask_cors import *
+import sys
+
+sys.path.append('.')
 
 from extensions import db
 from settings import config
@@ -17,6 +21,7 @@ def create_app(config_name=None):
         config_name = os.getenv('FLASK_CONFIG', 'development')
 
     app = Flask('HITRoomApply')
+    CORS(app, supports_credentials=True)  # 使其支持跨域请求
     app.config.from_object(config[config_name])
     app.config['SESSION_COOKIE_HTTPONLY'] = False
 
@@ -115,6 +120,9 @@ def register_blueprints(app):
     # POST: 新增教室
     # http://xx.com/api/admin/room/num
     # GET：获取教室数量
+    # http://xx.com/api/admin/room/<string:room_id>
+    # GET: 查看某个教室信息
+    # POST: 修改教室信息
     app.register_blueprint(adm_room.adm_room, url_prefix='/api/admin/room')
 
     # http://xx.com/api/admin/myroom
@@ -124,3 +132,9 @@ def register_blueprints(app):
     # http://xx.com/api/admin/user
     # GET: 获取用户信息
     app.register_blueprint(admin_user.admin_user, url_prefix='/api/admin/user')
+
+    # http://xx.com/api/admin/apply
+    app.register_blueprint(admin_apply.admin_apply, url_prefix='/api/admin/apply')
+
+    # http://xx.com/api/admin/timetable
+    app.register_blueprint(admin_timetable.admin_timetable, url_prefix='/api/admin/timetable')

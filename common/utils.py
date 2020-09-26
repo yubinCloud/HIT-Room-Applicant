@@ -81,7 +81,10 @@ def adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 2, 3)):
             account = session.get('admin_login')
             if account is None:  # 验证是否登录
                 return jsonify(code=-102, data={'tip': '用户未登录'})
-            cur_grade = Administrator.query.filter(Administrator.account == account).first().grade
+            cur_admin = Administrator.query.get(account)
+            if cur_admin is None:
+                return send_json(-102, '未查询到当前登录的管理员信息')
+            cur_grade = cur_admin.grade
             # 验证管理员等级
             if request.method == 'GET':
                 if cur_grade not in get_grades:

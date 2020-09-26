@@ -18,7 +18,7 @@ def apply_for_stu_GET(record):
                 'applicant_id': record.applicant_id,
                 'applicant_name': record.applicant_name,
                 'applicant_phone': record.applicant_phone,
-                'apply_time': record.apply_time.strftime('%Y-%m-%d'),
+                'apply_time': record.apply_time.strftime('%Y-%m-%d %H-%M-%S'),
                 'date': record.use_date,
                 'begin_time': record.begin_time,
                 'end_time': record.end_time,
