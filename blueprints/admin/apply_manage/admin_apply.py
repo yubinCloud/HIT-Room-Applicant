@@ -15,7 +15,7 @@ def look_room_status():
     查看教室状态
     :return:
     """
-    rev_json = request.get_json(silent=True)
+    rev_json = request.args
     look_date, look_building = rev_json.get('date'), rev_json.get('building')
 
     if look_date is None or look_building is None:
