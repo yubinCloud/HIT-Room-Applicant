@@ -74,7 +74,7 @@ def acquire_apply_list():
         rev_json = request.get_json(silent=True)
         if rev_json is None:
             return send_json(-101, '缺少必需参数')
-        apply_list = rev_json.get('apply')
+        apply_list = rev_json.get('applys')
         if type(apply_list) is not list:
             return send_json(-101, '缺少必需参数')
         if len(apply_list) == 0:
