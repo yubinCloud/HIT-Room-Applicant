@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request, session
+from datetime import datetime
 
 from common.utils import adm_login_required, send_json, record_exception
 from models import Apply, Administrator
@@ -70,7 +71,44 @@ def acquire_apply_list():
 
     # 当 method 为 POST 时
     else:
-        pass
+        rev_json = request.get_json(silent=True)
+        if rev_json is None:
+            return send_json(-101, '缺少必需参数')
+        apply_list = rev_json.get('apply')
+        if type(apply_list) is not list:
+            return send_json(-101, '缺少必需参数')
+        if len(apply_list) == 0:
+            return send_json(0, '待修改列表数据为空')
+
+        success_list = list()
+        for one_apply in apply_list:
+            activity_name = one_apply.get('activity_name')
+            use_date = one_apply.get('date')
+            begin_time = one_apply.get('begin_time')
+            end_time = one_apply.get('end_time')
+            room_name = one_apply.get('room_num', '不指定')
+            building = one_apply.get('building', '不指定')
+            floor = one_apply.get('floor', '不指定')
+            applicant_name = one_apply.get('applicant_name')
+            applicant_phone = one_apply.get('applicant_phone')
+            if None in {activity_name, use_date, begin_time, end_time, applicant_phone, applicant_name}:
+                return send_json(-101, '缺少必需参数')
+            one_apply_record = Apply(apply_id=0, activity_name=activity_name, applicant_id='',
+                                     applicant_name=applicant_name, applicant_phone=applicant_phone,
+                                     apply_time=datetime.now(), use_date=use_date, begin_time=begin_time,
+                                     end_time=end_time, people_count=-1, room_name=room_name,
+                                     building=building, floor=floor, teacher_name='', check_status='审核通过')
+            db.session.add(one_apply_record)
+            try:
+                db.session.commit()
+                success_list.append(one_apply)
+            except Exception as e:
+                db.session.rollback()
+                record_exception(e)
+        return send_json(0, success_list)
+
+
+
 
 
 @admin_apply.route('/<string:apply_id>', methods=['GET', 'POST'])
