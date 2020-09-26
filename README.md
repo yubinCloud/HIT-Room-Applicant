@@ -33,9 +33,9 @@
 |教室使用说明|http://xx.com/api/stu/room/use/id|GET|room.py|zyq|
 |查看教室介绍|http://xx.com/api/stu/room/id|GET|room.py|zyq|
 |教室使用情况|http://xx.com/api/stu/room/use|GET|room.py|yb|
-|我的申请列表|http://xx.com/api/stu/apply|GET|stu_apply.py|yb|
 |我的申请详细内容|http://xx.com/api/stu/apply/id|GET|stu_apply_info.py|yb|
 |修改申请内容|http://xx.com/api/stu/apply/id|POST|stu_apply_info.py|xql|
 |学生提交教室申请|http://xx.com/api/stu/apply|POST|stu_apply.py|wz|
+|我的申请列表|http://xx.com/api/stu/apply|GET|stu_apply.py|yb|
 |上传教室申请材料图片|http://xx.com/api/stu/apply/image|POST|||
 |获取时间表|http://xx.com/api/stu/timetable|GET|time_get.py|xql|

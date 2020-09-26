@@ -40,10 +40,14 @@ def register_commands(app):
 
 
 def register_blueprints(app):
-    # http://xx.com/stu/apply/id
-    # GET：我的申请详细内容
-    # POST：修改申请内容
-    app.register_blueprint(stu_apply_info.stu_apply_info, url_prefix='/api/stu/apply/<string:apply_id>')
+
+    # http://xx.com/api/stu/notice
+    # GET: 查看公告列表
+    app.register_blueprint(notice.notice, url_prefix='/api/stu/notice')
+
+    # http://xx.com/api/stu/notice/id
+    # GET: 查看公告详情
+    app.register_blueprint(notice.notice, url_prefix='/api/stu/notice/')
 
     # http://xx.com/api/stu/building
     # GET: 获取全部楼号
@@ -63,24 +67,20 @@ def register_blueprints(app):
     # GET: 教室使用情况
     app.register_blueprint(room.room, url_prefix='/api/stu')
 
-    # http://xx.com/api/stu/timetable
-    # GET: 获取时间表
-    app.register_blueprint(time_get.time_get, url_prefix='/api/stu/timetable')
-
     # http://xx.com/api/stu/apply
     # POST: 学生提交教室申请
     # GET: 我的申请列表
     app.register_blueprint(stu_apply.stu_apply, url_prefix='/api/stu/apply')
 
-    # http://xx.com/api/stu/notice
-    # GET: 查看公告列表
-    app.register_blueprint(notice.notice, url_prefix='/api/stu/notice')
-    # app.register_blueprint(notice_list.notice_list, url_prefix='/api/stu/notice')
 
-    # http://xx.com/api/stu/notice/id
-    # GET: 查看公告详情
-    app.register_blueprint(notice.notice, url_prefix='/api/stu/notice/')
-    # app.register_blueprint(notice_info.notice_info, url_prefix='/api/stu/notice/<string:notice_id>')
+    # http://xx.com/stu/apply/id
+    # GET：我的申请详细内容
+    # POST：修改申请内容
+    app.register_blueprint(stu_apply_info.stu_apply_info, url_prefix='/api/stu/apply/<string:apply_id>')
+
+    # http://xx.com/api/stu/timetable
+    # GET: 获取时间表
+    app.register_blueprint(time_get.time_get, url_prefix='/api/stu/timetable')
 
     # http://xx.com/api/admin/login
     # POST: 管理员登录系统
