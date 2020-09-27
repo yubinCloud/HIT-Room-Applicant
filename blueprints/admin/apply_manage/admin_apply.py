@@ -47,17 +47,21 @@ def acquire_apply_list():
     """
     # 当 method 为 GET 时
     if request.method == 'GET':
+        # 获取参数
         rev_json = request.args
         apply_status_type = rev_json.get('type')
         start_id, end_id = rev_json.get('start_id'), rev_json.get('end_id')
+        building = rev_json.get('building')
         if None in {apply_status_type, start_id, end_id}:
             return send_json(-101, '缺少必要参数')
         start_id, end_id = int(start_id), int(end_id)
-        applies = Apply.query.filter(Apply.check_status == apply_status_type)
-        building = rev_json.get('building')
+        # 进行查询
+        applies = Apply.query.filter(Apply.check_status == apply_status_type)  # 根据审核状态查询
         if building is not None:
-            applies = applies.filter(Apply.building == building)
+            applies = applies.filter(Apply.building == building)  # 根据教学楼查询
         apply_num = applies.count()
+        if start_id > apply_num:
+            return {0, []}
         end_id = end_id if end_id <= apply_num else apply_num  # 防止end_id越界
         applies = applies.order_by(Apply.apply_id.desc())  # 对所有公告进行倒序排序
         applies = applies.offset(start_id - 1).limit(end_id - start_id + 1)
