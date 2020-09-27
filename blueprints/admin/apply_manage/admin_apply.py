@@ -49,17 +49,23 @@ def acquire_apply_list():
     if request.method == 'GET':
         rev_json = request.args
         apply_status_type = rev_json.get('type')
-        if apply_status_type is None:
+        start_id, end_id = rev_json.get('start_id'), rev_json.get('end_id')
+        if None in {apply_status_type, start_id, end_id}:
             return send_json(-101, '缺少必要参数')
-        apply_records = Apply.query.filter(Apply.check_status == apply_status_type)
-
+        start_id, end_id = int(start_id), int(end_id)
+        applies = Apply.query.filter(Apply.check_status == apply_status_type)
         building = rev_json.get('building')
         if building is not None:
-            apply_records = apply_records(Apply.building == building)
+            applies = applies.filter(Apply.building == building)
+        apply_num = applies.count()
+        end_id = end_id if end_id <= apply_num else apply_num  # 防止end_id越界
+        applies = applies.order_by(Apply.apply_id.desc())  # 对所有公告进行倒序排序
+        applies = applies.offset(start_id - 1).limit(end_id - start_id + 1)
 
-        apply_records = apply_records.all()
+        apply_records = applies.all()
 
         result_data = [{
+            'apply_id': apply_record.apply_id,
             'activity': apply_record.activity_name,
             'organization': apply_record.applicant_name,
             'time': apply_record.apply_time,
