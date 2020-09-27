@@ -109,6 +109,7 @@ def acquire_apply_list():
             except Exception as e:
                 db.session.rollback()
                 record_exception(e)
+                return send_json(0, '数据库异常')
         return send_json(0, success_list)
 
 
