@@ -59,10 +59,10 @@ def notice_list_GET(rev_json):
     """
     # 获取参数
     start_id, end_id = rev_json.get('start_id'), rev_json.get('end_id')
-    start_id = int(start_id)
-    end_id = int(end_id)
     if start_id is None or end_id is None:  # 检查是否缺失参数
         return -101, None
+    start_id = int(start_id)
+    end_id = int(end_id)
     # 计算真正应该返回的公告id范围
     db_count = Notice.query.count()  # 公告的数量
     if start_id > db_count:
@@ -70,8 +70,8 @@ def notice_list_GET(rev_json):
     if end_id > db_count:
         end_id = db_count
     # 从数据库中查询相应记录
-    notices = Notice.query.offset(db_count - end_id).limit(end_id - start_id + 1).all()
-    res = [dict(id=record.notice_id, title=record.title, time=record.time)
+    notices = Notice.query.order_by(Notice.notice_id).offset(start_id - 1).limit(end_id - start_id + 1).all()
+    res = [dict(id=record.notice_id, title=record.title, time=record.time, org=record.org)
            for record in notices]
     return res
 
