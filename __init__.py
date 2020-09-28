@@ -1,9 +1,9 @@
+import sys
+sys.path.append('.')
 from flask import Flask
 import os
 import click
 from flask_cors import *
-import sys
-sys.path.append('.')
 from extensions import db
 from settings import config
 from blueprints import *
