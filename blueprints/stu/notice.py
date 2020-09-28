@@ -79,9 +79,11 @@ def Notice_List():
     }
     :return:从startid到endid的公告
     """
-    start_id = int(request.args.get('startid'))
-    end_id = int(request.args.get('endid'))
+    start_id = request.args.get('startid')
+    end_id = request.args.get('endid')
     if start_id and end_id:
+        start_id = int(request.args.get('startid'))
+        end_id = int(request.args.get('endid'))
         index = start_id
         data = []
         flag = 0    # 当有部分id在数据库中查不到时置为1
