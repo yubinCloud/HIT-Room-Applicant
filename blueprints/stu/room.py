@@ -157,7 +157,6 @@ def RoomUseInfo(room_id):
     result = Apply.query.filter(Apply.begin_time == begin_time and Apply.end_time == end_time and
                                 Apply.use_date == date and Apply.room_name == room_name).first()
     if not result:
-        print('here')
         return jsonify(code=-102, data={})
     else:
         return jsonify(code=0, data={"organization": result.applicant_name, "activity": result.activity_name})
