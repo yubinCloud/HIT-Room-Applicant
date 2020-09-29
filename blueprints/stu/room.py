@@ -47,7 +47,7 @@ def max_class_id(timetable):
     max_class = -1
     for period in timetable:
         if period.class_id > max_class:
-            max_class = period
+            max_class = period.class_id
     return max_class
 
 
