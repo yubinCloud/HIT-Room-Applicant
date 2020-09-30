@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request, session
+from datetime import datetime
 
 from common.utils import adm_login_required, send_json, record_exception
 from models import Apply, Administrator
@@ -46,19 +47,29 @@ def acquire_apply_list():
     """
     # 当 method 为 GET 时
     if request.method == 'GET':
+        # 获取参数
         rev_json = request.args
         apply_status_type = rev_json.get('type')
-        if apply_status_type is None:
-            return send_json(-101, '缺少必要参数')
-        apply_records = Apply.query.filter(Apply.check_status == apply_status_type)
-
+        start_id, end_id = rev_json.get('start_id'), rev_json.get('end_id')
         building = rev_json.get('building')
+        if None in {apply_status_type, start_id, end_id}:
+            return send_json(-101, '缺少必要参数')
+        start_id, end_id = int(start_id), int(end_id)
+        # 进行查询
+        applies = Apply.query.filter(Apply.check_status == apply_status_type)  # 根据审核状态查询
         if building is not None:
-            apply_records = apply_records(Apply.building == building)
+            applies = applies.filter(Apply.building == building)  # 根据教学楼查询
+        apply_num = applies.count()
+        if start_id > apply_num:
+            return {0, []}
+        end_id = end_id if end_id <= apply_num else apply_num  # 防止end_id越界
+        applies = applies.order_by(Apply.apply_id.desc())  # 对所有公告进行倒序排序
+        applies = applies.offset(start_id - 1).limit(end_id - start_id + 1)
 
-        apply_records = apply_records.all()
+        apply_records = applies.all()
 
         result_data = [{
+            'apply_id': apply_record.apply_id,
             'activity': apply_record.activity_name,
             'organization': apply_record.applicant_name,
             'time': apply_record.apply_time,
@@ -70,7 +81,49 @@ def acquire_apply_list():
 
     # 当 method 为 POST 时
     else:
-        pass
+        rev_json = request.get_json(silent=True)
+        if rev_json is None:
+            return send_json(-101, '缺少必需参数')
+        apply_list = rev_json.get('applys')
+        if type(apply_list) is not list:
+            return send_json(-101, '缺少必需参数')
+        if len(apply_list) == 0:
+            return send_json(0, '待修改列表数据为空')
+
+        admin = Administrator.query.get(session.get('admin_login'))
+
+
+        success_list = list()
+        for one_apply in apply_list:
+            activity_name = one_apply.get('activity_name')
+            use_date = one_apply.get('date')
+            begin_time = one_apply.get('begin_time')
+            end_time = one_apply.get('end_time')
+            room_name = one_apply.get('room_num', '不指定')
+            building = one_apply.get('building', '不指定')
+            floor = one_apply.get('floor', '不指定')
+            applicant_name = one_apply.get('applicant_name')
+            applicant_phone = one_apply.get('applicant_phone')
+            if None in {activity_name, use_date, begin_time, end_time, applicant_phone, applicant_name}:
+                return send_json(-101, '缺少必需参数')
+            one_apply_record = Apply(apply_id=0, activity_name=activity_name, applicant_id='',
+                                     applicant_name=applicant_name, applicant_phone=applicant_phone,
+                                     apply_time=datetime.now(), use_date=use_date, begin_time=begin_time,
+                                     end_time=end_time, people_count=-1, room_name=room_name,
+                                     building=building, floor=floor, teacher_name='', check_status='审核通过',
+                                     org=admin.org, verifier_name=admin.name)
+            db.session.add(one_apply_record)
+            try:
+                db.session.commit()
+                success_list.append(one_apply)
+            except Exception as e:
+                db.session.rollback()
+                record_exception(e)
+                return send_json(0, '数据库异常')
+        return send_json(0, success_list)
+
+
+
 
 
 @admin_apply.route('/<string:apply_id>', methods=['GET', 'POST'])

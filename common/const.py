@@ -1,4 +1,5 @@
 import logging
+import os
 
 # 连接数据库的相关常量
 class DatabaseConst:
@@ -11,3 +12,6 @@ class DatabaseConst:
 
 # 日志
 LOGGING = logging
+
+# 图片存储的路径
+PIC_BASIC_DIR = os.path.abspath(os.path.dirname(__file__)) + '/pic'
