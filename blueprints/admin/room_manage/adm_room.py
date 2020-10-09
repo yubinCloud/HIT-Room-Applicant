@@ -9,7 +9,7 @@ adm_room = Blueprint('adm_room', __name__)
 
 
 @adm_room.route('', methods=['GET', 'POST'])
-@adm_login_required(get_grades=(1, 2, 3), post_grades=(1,))
+@adm_login_required(get_grades=(1, 2, 3), post_grades=(1, 3))
 def Adm_room():
     """
     GET：查看教室列表
