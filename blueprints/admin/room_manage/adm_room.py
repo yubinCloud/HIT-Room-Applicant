@@ -140,8 +140,11 @@ def Adm_room_GET(rev_json):
     # 验证参数的有效性
     if None in (start_id, end_id):
         return jsonify(code=-101, tip='缺少必要参数')
-    start_id = int(start_id)
-    end_id = int(end_id)
+    try:
+        start_id = int(start_id)
+        end_id = int(end_id)
+    except Exception:
+        return send_json(-102, 'start_id 或 end_id 值错误')
     room_nums = Room.query.count()
     if start_id > room_nums:
         return jsonify(code=-102, tip='超过教室最大数量')
