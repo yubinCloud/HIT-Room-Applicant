@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from models import Administrator
 from extensions import db
 import hashlib
@@ -26,6 +26,10 @@ def Adm_account():
         code, tip = admin_add(admin, rev_json)
         if code == -101:  # 缺少必需参数
             return jsonify(code=code, data={'tip': tip})
+
+        # 根据发起本次操作的管理的org来决定本次添加的管理员的org
+        opr_admin = Administrator.query.get(session.get('admin_login'))
+        admin.org = opr_admin.org
         db.session.add(admin)
         try:
             db.session.commit()
@@ -77,15 +81,14 @@ def admin_add(admin, rev_json):
     :param rev_json: 接收的json数据
     :return: (code, tip) 状态码及提示信息
     """
-    account_, password_, grade_, name_, org_, phone_, = rev_json.get('account'), rev_json.get('password'), \
+    account_, password_, grade_, name_, phone_, = rev_json.get('account'), rev_json.get('password'), \
                                                        rev_json.get('grade'), rev_json.get('name'), \
-                                                       rev_json.get('org'), rev_json.get('phone')
-    if None in (account_, password_, grade_, org_):
+                                                       rev_json.get('phone')
+    if None in (account_, password_, grade_):
         return -101, '缺少必需参数'
     admin.account = account_
     admin.password = hashlib.new('md5', password_.encode()).hexdigest()
     admin.grade = grade_
-    admin.org = org_
     if name_:
         admin.name = name_
     if phone_:
