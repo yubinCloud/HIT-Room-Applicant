@@ -70,7 +70,7 @@ def notice_list_GET(rev_json):
     if end_id > db_count:
         end_id = db_count
     # 从数据库中查询相应记录
-    notices = Notice.query.order_by(Notice.notice_id).offset(start_id - 1).limit(end_id - start_id + 1).all()
+    notices = Notice.query.order_by(Notice.notice_id.desc()).offset(start_id - 1).limit(end_id - start_id + 1).all()
     res = [dict(id=record.notice_id, title=record.title, time=record.time, org=record.org)
            for record in notices]
     return res
