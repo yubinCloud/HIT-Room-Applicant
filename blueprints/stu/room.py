@@ -47,7 +47,7 @@ def max_class_id(timetable):
     max_class = -1
     for period in timetable:
         if period.class_id > max_class:
-            max_class = period
+            max_class = period.class_id
     return max_class
 
 
@@ -157,7 +157,6 @@ def RoomUseInfo(room_id):
     result = Apply.query.filter(Apply.begin_time == begin_time and Apply.end_time == end_time and
                                 Apply.use_date == date and Apply.room_name == room_name).first()
     if not result:
-        print('here')
         return jsonify(code=-102, data={})
     else:
         return jsonify(code=0, data={"organization": result.applicant_name, "activity": result.activity_name})

@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 
-from models import Apply
+from models import Apply, Room
 from extensions import db
 import datetime
 
@@ -18,6 +18,7 @@ def from_session_get_applicant_id():
 def Stu_Apply():
     global result_data
     if request.method == 'POST':
+        # 学生提交申请
         json_data = request.get_json(silent=True)
 
         if json_data is None:
@@ -68,6 +69,14 @@ def Stu_Apply():
         if not json_data.get('material'):
             material_flag = 0
 
+        building_posted = json_data.get('building')
+        floor_posted = json_data.get('floor')
+        room_posted = json_data.get('room')
+        exist = Room.query.filter(
+            Room.room_name == room_posted and Room.floor == floor_posted and Room.building == building_posted).first()
+        if exist is None:
+            return jsonify(code=-102, data={'tip': '未查询到该教室'})
+
         room = Apply()
         time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         apply_id = str(0)
@@ -102,7 +111,7 @@ def Stu_Apply():
         return jsonify(code=0, data={'tip': '正常'})
 
     elif request.method == 'GET':
-        # 获取学生学号
+        # 获取所有申请列表
         records = Apply.query.all()
         result_data = list()
 
