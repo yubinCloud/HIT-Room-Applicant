@@ -4,7 +4,7 @@ from datetime import datetime
 from common.utils import adm_login_required, send_json, record_exception
 from models import Apply, Administrator
 from extensions import db
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 
 
 admin_apply = Blueprint('admin_apply', __name__)
@@ -56,7 +56,14 @@ def acquire_apply_list():
             return send_json(-101, '缺少必要参数')
         start_id, end_id = int(start_id), int(end_id)
         # 进行查询
-        applies = Apply.query.filter(Apply.check_status == apply_status_type)  # 根据审核状态查询
+        applies = Apply.query
+        # 首先根据审核状态查询
+        if apply_status_type == 'unchecked':
+            applies = applies.filter(Apply.check_status == "待审核")
+        elif apply_status_type == 'checked':
+            applies = applies.filter(or_(Apply.check_status == "审核通过", Apply.check_status == "审核失败"))
+        else:
+            return send_json(-101, "type 参数错误")
         if building is not None:
             applies = applies.filter(Apply.building == building)  # 根据教学楼查询
         apply_num = applies.count()
