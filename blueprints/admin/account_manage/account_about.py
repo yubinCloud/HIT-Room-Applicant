@@ -3,6 +3,9 @@ from models import Administrator
 from extensions import db
 import hashlib
 
+from common.utils import send_json
+
+
 account_about = Blueprint('account_about', __name__)
 
 
@@ -61,6 +64,11 @@ def account_list_GET(rev_json):
     start_id, end_id = rev_json.get('start_id'), rev_json.get('end_id')
     if start_id is None or end_id is None:  # 检查是否缺失参数
         return -101, '缺少必需参数'
+    try:
+        start_id = int(start_id)
+        end_id = int(end_id)
+    except Exception:
+        return send_json(-102, 'start_id 或 end_id 值错误')
     # 计算真正应返回的账号id范围
     db_count = Administrator.query.count()  # 账号的数量
     if start_id > db_count:
