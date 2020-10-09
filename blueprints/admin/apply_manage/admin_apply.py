@@ -50,15 +50,15 @@ def acquire_apply_list():
         # 获取参数
         rev_json = request.args
         apply_status_type = rev_json.get('type')
-        start_id, end_id = rev_json.get('start_id'), rev_json.get('end_id')
+        start_cursor, end_cursor = rev_json.get('start_cursor'), rev_json.get('end_cursor')
         building = rev_json.get('building')
-        if None in {apply_status_type, start_id, end_id}:
+        if None in {apply_status_type, start_cursor, end_cursor}:
             return send_json(-101, '缺少必要参数')
-        start_id, end_id = int(start_id), int(end_id)
+        start_cursor, end_cursor = int(start_cursor), int(end_cursor)
         # 进行查询
         applies = Apply.query
         # 首先根据审核状态查询
-        if apply_status_type == 'unchecked':
+        if apply_status_type == 'uncheck':
             applies = applies.filter(Apply.check_status == "待审核")
         elif apply_status_type == 'checked':
             applies = applies.filter(or_(Apply.check_status == "审核通过", Apply.check_status == "审核失败"))
@@ -67,11 +67,11 @@ def acquire_apply_list():
         if building is not None:
             applies = applies.filter(Apply.building == building)  # 根据教学楼查询
         apply_num = applies.count()
-        if start_id > apply_num:
-            return {0, []}
-        end_id = end_id if end_id <= apply_num else apply_num  # 防止end_id越界
         applies = applies.order_by(Apply.apply_id.desc())  # 对所有公告进行倒序排序
-        applies = applies.offset(start_id - 1).limit(end_id - start_id + 1)
+        if start_cursor > apply_num:
+            return send_json(0, [])
+        end_cursor = end_cursor if end_cursor <= apply_num else apply_num  # 防止end_id越界
+        applies = applies.offset(start_cursor - 1).limit(end_cursor - start_cursor + 1)
 
         apply_records = applies.all()
 
