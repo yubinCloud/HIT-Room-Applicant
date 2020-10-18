@@ -49,3 +49,6 @@
 |我的申请列表|http://xx.com/api/stu/apply|GET|stu_apply.py|yb|
 |上传教室申请材料图片|http://xx.com/api/stu/apply/image|POST|||
 |获取时间表|http://xx.com/api/stu/timetable|GET|time_get.py|xql|
+
+
+test
