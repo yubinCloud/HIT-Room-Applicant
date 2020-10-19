@@ -67,19 +67,17 @@ def acquire_apply_list():
         if building is not None:
             applies = applies.filter(Apply.building == building)  # 根据教学楼查询
         apply_num = applies.count()
-        applies = applies.order_by(Apply.apply_id.desc())  # 对所有公告进行倒序排序
+        applies = applies.order_by(Apply.apply_id.desc())  # 对所有查询进行倒序排序
         if start_cursor > apply_num:
             return send_json(0, [])
         end_cursor = end_cursor if end_cursor <= apply_num else apply_num  # 防止end_id越界
         applies = applies.offset(start_cursor - 1).limit(end_cursor - start_cursor + 1)
 
         apply_records = applies.all()
-
         result_data = [{
-            'apply_id': apply_record.apply_id,
             'activity': apply_record.activity_name,
             'organization': apply_record.applicant_name,
-            'time': apply_record.apply_time,
+            'time': apply_record.apply_time.strftime('%Y-%m-%d'),
             'building': apply_record.building,
             'room_name': apply_record.room_name
         } for apply_record in apply_records]
