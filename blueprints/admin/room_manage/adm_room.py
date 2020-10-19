@@ -38,7 +38,9 @@ def Adm_room_num():
     :return:
     """
     if request.method == "GET":
-        return Adm_room_num_GET()
+        cur_account = session.get('admin_login')  # 获取当前用户名
+
+        return Adm_room_num_GET(cur_account)
 
 
 @adm_room.route('/noadmin', methods=['GET'])
@@ -209,9 +211,11 @@ def Adm_room_POST(rev_json):
     return jsonify(data={'tip': '教室添加成功'})
 
 
-def Adm_room_num_GET():
+def Adm_room_num_GET(cur_account):
     """
     处理Adm_room_num的GET请求
     :return: 需要返回给前端的数据
     """
-    return jsonify(code=0, data={'num': Room.query.count()})
+    cur_admin = Administrator.query.filter_by(account=cur_account).first()
+    cur_org = cur_admin.org
+    return jsonify(code=0, data={'num': len(Room.query.filter(Room.org == cur_org).all())})
