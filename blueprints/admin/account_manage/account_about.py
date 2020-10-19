@@ -52,8 +52,11 @@ def Adm_account_num():
     GET：获取账号数量
     :return:
     """
-    account_num = Administrator.query.count()
-    return jsonify(code=0, data={'num':account_num})
+    cur_account = session.get('admin_login')
+    cur_admin = Administrator.query.filter_by(account=cur_account).first()
+    cur_org = cur_admin.org
+    account_num = len(Administrator.query.filter(Administrator.org == cur_org).all())
+    return jsonify(code=0, data={'num': account_num})
 
 
 def account_list_GET(rev_json, cur_org):
