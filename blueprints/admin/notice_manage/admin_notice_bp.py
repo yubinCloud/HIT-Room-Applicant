@@ -11,13 +11,34 @@ admin_notice_bp = Blueprint('admin_notice_bp', __name__)
 def admin_notice_handler():
     if request.method == 'GET':
         # 处理GET请求
-        rev_json = request.args
-        res = notice_list_GET(rev_json)
-        if type(res) is list:
-            return jsonify(code=0, data=res)
-        elif type(res) is tuple:
-            code, tip = res
-            return jsonify(code=code, data={'tip': tip})
+        start_id = request.args.get('start_id')
+        end_id = request.args.get('end_id')
+        if start_id and end_id:
+            start_id = int(request.args.get('start_id'))
+            end_id = int(request.args.get('end_id'))
+            index = start_id
+            data = []
+            flag = 0  # 当有部分id在数据库中查不到时置为1
+            while index <= end_id:
+                index_str = str(index)
+                record = Notice.query.filter(Notice.notice_id == index_str).first()
+                if record:
+                    temp = {
+                        'id': record.notice_id,
+                        'title': record.title,
+                        'time': record.time.strftime('%Y-%m-%d'),
+                        'org': record.org
+                    }
+                    data.append(temp)
+                else:
+                    flag = 1
+                index += 1
+            if flag == 1 and data == []:  # 查询不到
+                return jsonify(code=101, data={'tip': '数据库查询失败'})
+            return jsonify(code=0, data=data)
+        else:
+            print("here")
+            return jsonify(code=-101, data={'tip': '缺少必要参数'})
     elif request.method == 'POST':
         rev_json = request.get_json(silent=True)
         # 处理POST请求

@@ -102,8 +102,10 @@ def register_blueprints(app):
     app.register_blueprint(adm_room.adm_room, url_prefix='/api/admin/room')
 
     # http://xx.com/api/admin/myroom
+    # http://xx.com/api/admin/building
     # POST: 移入/移出教室
-    app.register_blueprint(adm_myroom.adm_myroom, url_prefix='/api/admin/myroom')
+    # GET:  获得全部楼号
+    app.register_blueprint(adm_myroom.adm_myroom, url_prefix='/api/admin')
 
     # http://xx.com/api/admin/user
     # GET: 获取用户信息

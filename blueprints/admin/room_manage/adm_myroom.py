@@ -5,7 +5,7 @@ from extensions import db
 adm_myroom = Blueprint('adm_myroom', __name__)
 
 
-@adm_myroom.route('', methods=['POST'])
+@adm_myroom.route('/myroom', methods=['POST'])
 #@adm_login_required(post_grades=(1, ))
 def Adm_myroom():
     """
@@ -29,6 +29,27 @@ def Adm_myroom():
     elif shift_type == 1:
         return shift_in(cur_admin.org, room_ids)     # 移入操作
 
+
+@adm_myroom.route('/building', methods=['GET'])
+def room_number_fun():
+    """
+    获取全部楼号
+    http://xx.com/api/admin/building
+    :return: json
+    """
+    room_list = Room.query.all()  # 获取Room表所有教室信息
+    s = set()
+    for i in room_list:
+        s.add(i.building)
+    room_data = {}
+    for i in s:
+        room_data[i] = {}
+    for i in room_list:
+        if i.floor not in room_data[i.building]:
+            room_data[i.building][i.floor] = []
+    for i in room_list:
+        room_data[i.building][i.floor].append(i.room_name)
+    return jsonify(code=0, data=room_data)
 
 def shift_out(org, room_ids):
     """
