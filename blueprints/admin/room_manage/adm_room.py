@@ -73,7 +73,9 @@ def Adm_room_noadmin_num():
     :return:
     """
     noadmin_room_num = Room.query.filter_by(org=None).count()
-    return jsonify(code=0, data=noadmin_room_num)
+    dic = {}
+    dic['num'] = noadmin_room_num
+    return jsonify(code=0, data=dic)
 
 
 @adm_room.route('/<string:room_id>', methods=['GET', 'POST'])
