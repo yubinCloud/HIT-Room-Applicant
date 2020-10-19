@@ -114,7 +114,8 @@ def Adm_room_info(room_id):
                 db.session.rollback()
                 record_exception(e)
                 return send_json(-101, '数据库异常')
-            return send_json(0, '教室 {} 信息删除成功'.format(room_name))
+            # return send_json(0, '教室 {} 信息删除成功'.format(room_name))
+            return send_json(0, '操作成功')
         elif opr_type == 'update':
             optional_args = {'building', 'floor', 'room_name', 'picture', 'max_num', 'description', 'permissible'}
             for k, v in rev_json.items():
@@ -126,7 +127,8 @@ def Adm_room_info(room_id):
                 db.session.rollback()
                 record_exception(e)
                 return send_json(-101, '数据库异常')
-            return send_json(0, '教室 {} 信息更新成功'.format(room_name))
+            # return send_json(0, '教室 {} 信息更新成功'.format(room_name))
+            return send_json(0, '操作成功')
         else:
             return send_json(-102, '对数据库的操作类型错误')
 
