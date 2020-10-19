@@ -1,7 +1,7 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 
 from common.utils import adm_login_required, send_json, record_exception
-from models import Room
+from models import Room, Administrator
 from extensions import db
 from sqlalchemy import and_
 
@@ -18,7 +18,10 @@ def Adm_room():
     """
     if request.method == 'GET':
         rev_json = request.args
-        return Adm_room_GET(rev_json)
+        admin_name = session.get('admin_login')
+        admin = Administrator.query.filter(Administrator.account == admin_name).first()
+        org = admin.org
+        return Adm_room_GET(rev_json, org)
     if request.method == 'POST':
         # 获取json
         rev_json = request.get_json(silent=True)
@@ -130,10 +133,10 @@ def Adm_room_info(room_id):
 
 
 
-def Adm_room_GET(rev_json):
+def Adm_room_GET(rev_json, org):
     """
     处理Adm_room视图函数的GET请求
-    :param rev_json: 接收到的json数据
+    :param rev_json: 接收到的json数据。
     :return: 需要发送给前端的结果
     """
     start_id, end_id = rev_json.get('start_id'), rev_json.get('end_id')
@@ -152,11 +155,11 @@ def Adm_room_GET(rev_json):
         end_id = room_nums
     # 查询出所有符合条件的教室
     rooms = Room.query.offset(start_id - 1).limit(end_id - start_id + 1).all()
-    res_data = rooms_to_data(rooms)
+    res_data = rooms_to_data(rooms, org)
     return jsonify(code=0, data=res_data)
 
 
-def rooms_to_data(rooms):
+def rooms_to_data(rooms, org):
     """
     将rooms转化成一个包含所有room对应字典的列表对象，其中每个字典包含该room的所有信息
     :param rooms:所有待转化的教室
@@ -168,7 +171,7 @@ def rooms_to_data(rooms):
                  room_name=room.room_name,
                  org=room.org,
                  max_num=room.max_num,
-                 permissible=room.permissible) for room in rooms]
+                 permissible=room.permissible) for room in rooms if room.org == org]
 
 
 def Adm_room_POST(rev_json):
