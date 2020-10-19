@@ -15,7 +15,10 @@ def Adm_account():
     # 获取json
     if request.method == 'GET':  # 处理GET请求
         rev_json = request.args
-        res = account_list_GET(rev_json)
+        cur_account = session.get('admin_login')
+        cur_admin = Administrator.query.filter(Administrator.account == cur_account).first()
+        cur_org = cur_admin.org
+        res = account_list_GET(rev_json, cur_org)
         if type(res) == list:  # 成功返回数据
             return jsonify(code=0, data=res)
         elif type(res) == tuple:  # 失败，返回提示信息
@@ -53,10 +56,10 @@ def Adm_account_num():
     return jsonify(code=0, data={'num':account_num})
 
 
-def account_list_GET(rev_json):
+def account_list_GET(rev_json, cur_org):
     """
     处理GET请求
-    :param rev_json: 接受的json数据
+    :param rev_json: 接受的json数据，cur_org：执行目前操作的管理员
     :return: 运行正确时返回需要发送的json中的data字段的值，其type为列表
             若出现错误则返回一个元组，分别为需要发送给前端的code和data字段值
     """
@@ -78,7 +81,7 @@ def account_list_GET(rev_json):
     # 从数据库中查询相应记录
     administrators = Administrator.query.offset(db_count - end_id).limit(end_id - start_id + 1).all()
     res = [dict(account=record.account, grade=record.grade, name=record.name, phone=record.phone)
-           for record in administrators]
+           for record in administrators if record.org == cur_org]
     return res
 
 
